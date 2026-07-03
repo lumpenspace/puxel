@@ -1,0 +1,1483 @@
+<!-- @dsCard name="Cards" group="Containers" subtitle="Header / body / footer, accent, hover" -->
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cards — Puxel</title>
+<style>
+/* ==========================================================================
+   PUXEL — design tokens
+   Brutalist/retro UI kit. Themes are applied with [data-theme="…"] on any
+   ancestor (usually <html>). Every component reads only from these variables.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("data:font/woff2;base64,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") format("woff2");
+}
+
+:root {
+  /* ---- primitives (theme-independent) ---- */
+  --px-font-display: "Press Start 2P", "Courier New", monospace;
+  --px-font-body: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --px-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --px-space-1: 4px;
+  --px-space-2: 8px;
+  --px-space-3: 12px;
+  --px-space-4: 16px;
+  --px-space-5: 24px;
+  --px-space-6: 32px;
+  --px-space-7: 48px;
+
+  --px-border-w: 3px;
+  --px-border-w-thin: 2px;
+  --px-radius: 0px;
+
+  --px-shadow-x: 4px;
+  --px-shadow-y: 4px;
+  --px-shadow: var(--px-shadow-x) var(--px-shadow-y) 0 0 var(--px-shadow-color);
+  --px-shadow-sm: 2px 2px 0 0 var(--px-shadow-color);
+  --px-shadow-lg: 8px 8px 0 0 var(--px-shadow-color);
+
+  --px-speed: 120ms;
+  --px-ease: cubic-bezier(0.2, 0.8, 0.4, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --px-speed: 0ms;
+  }
+}
+
+/* ==========================================================================
+   THEME: paper (default light) — cream + ink, punchy accents
+   ========================================================================== */
+:root,
+[data-theme="paper"] {
+  color-scheme: light;
+
+  --px-bg: #faf3e3;
+  --px-surface: #fffdf5;
+  --px-surface-2: #f3e9d2;
+  --px-ink: #16130d;
+  --px-ink-muted: #6b6455;
+  --px-border-color: #16130d;
+  --px-shadow-color: #16130d;
+
+  --px-accent: #ffd23f;
+  --px-accent-ink: #16130d;
+  --px-accent-2: #ff6b35;
+  --px-accent-2-ink: #16130d;
+
+  --px-success: #00a868;
+  --px-success-ink: #ffffff;
+  --px-warning: #ffb02e;
+  --px-warning-ink: #16130d;
+  --px-danger: #ef3e36;
+  --px-danger-ink: #ffffff;
+  --px-info: #2d7ff9;
+  --px-info-ink: #ffffff;
+
+  --px-selection: #ffd23f;
+}
+
+/* ==========================================================================
+   THEME: midnight (dark) — near-black + off-white ink, yellow/violet neon
+   ========================================================================== */
+[data-theme="midnight"] {
+  color-scheme: dark;
+
+  --px-bg: #0f1115;
+  --px-surface: #1a1d24;
+  --px-surface-2: #242833;
+  --px-ink: #f2f0e9;
+  --px-ink-muted: #9a97a3;
+  --px-border-color: #f2f0e9;
+  --px-shadow-color: #000000;
+
+  --px-accent: #ffd23f;
+  --px-accent-ink: #16130d;
+  --px-accent-2: #8b7bff;
+  --px-accent-2-ink: #0f1115;
+
+  --px-success: #3ddc84;
+  --px-success-ink: #0f1115;
+  --px-warning: #ffb02e;
+  --px-warning-ink: #16130d;
+  --px-danger: #ff5c57;
+  --px-danger-ink: #0f1115;
+  --px-info: #58a6ff;
+  --px-info-ink: #0f1115;
+
+  --px-selection: #8b7bff;
+}
+
+/* ==========================================================================
+   THEME: arcade — NES deep blue, cabinet red + coin gold
+   ========================================================================== */
+[data-theme="arcade"] {
+  color-scheme: dark;
+
+  --px-bg: #171c48;
+  --px-surface: #212a6b;
+  --px-surface-2: #2b3585;
+  --px-ink: #ffffff;
+  --px-ink-muted: #9aa3e0;
+  --px-border-color: #ffffff;
+  --px-shadow-color: #0a0d29;
+
+  --px-accent: #ff4245;
+  --px-accent-ink: #ffffff;
+  --px-accent-2: #ffc93c;
+  --px-accent-2-ink: #171c48;
+
+  --px-success: #6ecb63;
+  --px-success-ink: #171c48;
+  --px-warning: #ffc93c;
+  --px-warning-ink: #171c48;
+  --px-danger: #ff4245;
+  --px-danger-ink: #ffffff;
+  --px-info: #4da6ff;
+  --px-info-ink: #171c48;
+
+  --px-selection: #ffc93c;
+}
+
+/* ==========================================================================
+   THEME: terminal — CRT phosphor green on black, amber secondary
+   ========================================================================== */
+[data-theme="terminal"] {
+  color-scheme: dark;
+
+  --px-bg: #060c06;
+  --px-surface: #0a140a;
+  --px-surface-2: #102010;
+  --px-ink: #33ff66;
+  --px-ink-muted: #1e9e44;
+  --px-border-color: #33ff66;
+  --px-shadow-color: #124d24;
+
+  --px-accent: #33ff66;
+  --px-accent-ink: #060c06;
+  --px-accent-2: #ffbf00;
+  --px-accent-2-ink: #060c06;
+
+  --px-success: #33ff66;
+  --px-success-ink: #060c06;
+  --px-warning: #ffbf00;
+  --px-warning-ink: #060c06;
+  --px-danger: #ff5c57;
+  --px-danger-ink: #060c06;
+  --px-info: #38d1ff;
+  --px-info-ink: #060c06;
+
+  --px-selection: #33ff66;
+
+  /* the terminal speaks mono */
+  --px-font-body: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* ==========================================================================
+   PUXEL — base + utilities
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--px-bg);
+  color: var(--px-ink);
+  font-family: var(--px-font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--px-selection);
+  color: var(--px-ink);
+}
+
+/* Every interactive element gets the same loud focus ring */
+.px-focusable:focus-visible,
+.px-btn:focus-visible,
+.px-input:focus-visible,
+.px-textarea:focus-visible,
+.px-select select:focus-visible,
+.px-check input:focus-visible ~ .px-check-box,
+.px-radio input:focus-visible ~ .px-radio-dot,
+.px-switch input:focus-visible ~ .px-switch-track,
+.px-slider:focus-visible,
+.px-tab:focus-visible,
+.px-accordion-trigger:focus-visible,
+.px-pagination-btn:focus-visible,
+.px-menu-trigger:focus-visible,
+.px-menu-item:focus-visible {
+  outline: var(--px-border-w) solid var(--px-accent-2);
+  outline-offset: 2px;
+}
+
+/* ---- typography ------------------------------------------------------- */
+.px-display {
+  font-family: var(--px-font-display);
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  margin: 0;
+}
+.px-display--xl { font-size: 32px; }
+.px-display--lg { font-size: 24px; }
+.px-display--md { font-size: 16px; }
+.px-display--sm { font-size: 12px; }
+.px-display--xs { font-size: 9px; }
+
+.px-label {
+  font-family: var(--px-font-body);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.px-muted { color: var(--px-ink-muted); }
+
+.px-link {
+  color: var(--px-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--px-accent);
+  text-underline-offset: 3px;
+  transition: background var(--px-speed) var(--px-ease);
+}
+.px-link:hover {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+  text-decoration-color: var(--px-ink);
+}
+
+/* ---- pixel corners (opt-in) -------------------------------------------
+   Stepped clip-path corners: the "8-bit" silhouette without going full NES.
+   Works on solid-bg elements; borders are clipped so it pairs best with
+   .px-btn--primary / badges / solid chips. */
+.px-pixelated {
+  clip-path: polygon(
+    0 6px, 3px 6px, 3px 3px, 6px 3px, 6px 0,
+    calc(100% - 6px) 0, calc(100% - 6px) 3px, calc(100% - 3px) 3px, calc(100% - 3px) 6px, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 3px) calc(100% - 6px), calc(100% - 3px) calc(100% - 3px), calc(100% - 6px) calc(100% - 3px), calc(100% - 6px) 100%,
+    6px 100%, 6px calc(100% - 3px), 3px calc(100% - 3px), 3px calc(100% - 6px), 0 calc(100% - 6px)
+  );
+}
+
+/* ---- CRT overlay (opt-in, pairs with the terminal theme) --------------- */
+.px-crt {
+  position: relative;
+}
+.px-crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ---- misc utilities ---------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.px-border { border: var(--px-border-w) solid var(--px-border-color); }
+.px-shadow { box-shadow: var(--px-shadow); }
+.px-shadow-sm { box-shadow: var(--px-shadow-sm); }
+.px-shadow-lg { box-shadow: var(--px-shadow-lg); }
+
+.px-separator {
+  border: none;
+  border-top: var(--px-border-w) solid var(--px-border-color);
+  margin: var(--px-space-5) 0;
+}
+.px-separator--dashed { border-top-style: dashed; }
+.px-separator--vertical {
+  display: inline-block;
+  align-self: stretch;
+  width: 0;
+  border-top: none;
+  border-left: var(--px-border-w) solid var(--px-border-color);
+  margin: 0 var(--px-space-4);
+}
+
+.px-kbd {
+  display: inline-block;
+  padding: 2px 7px 4px;
+  font-family: var(--px-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  border-bottom-width: 4px;
+  border-radius: var(--px-radius);
+}
+
+/* ==========================================================================
+   PUXEL — controls: button, badge, avatar, spinner
+   ========================================================================== */
+
+/* ---- Button ------------------------------------------------------------ */
+.px-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--px-space-2);
+  padding: 10px 18px;
+  font-family: var(--px-font-body);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  border-radius: var(--px-radius);
+  box-shadow: var(--px-shadow);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform var(--px-speed) var(--px-ease),
+    box-shadow var(--px-speed) var(--px-ease),
+    background var(--px-speed) var(--px-ease);
+}
+.px-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: calc(var(--px-shadow-x) + 2px) calc(var(--px-shadow-y) + 2px) 0 0 var(--px-shadow-color);
+}
+.px-btn:active {
+  transform: translate(var(--px-shadow-x), var(--px-shadow-y));
+  box-shadow: 0 0 0 0 var(--px-shadow-color);
+}
+.px-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--px-shadow);
+}
+
+.px-btn--primary { background: var(--px-accent); color: var(--px-accent-ink); }
+.px-btn--secondary { background: var(--px-ink); color: var(--px-bg); }
+.px-btn--danger { background: var(--px-danger); color: var(--px-danger-ink); }
+.px-btn--success { background: var(--px-success); color: var(--px-success-ink); }
+.px-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.px-btn--ghost:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--px-surface-2);
+  border-color: var(--px-border-color);
+}
+.px-btn--ghost:active { transform: translate(2px, 2px); }
+
+.px-btn--sm { padding: 6px 12px; font-size: 12px; }
+.px-btn--lg { padding: 14px 26px; font-size: 16px; }
+.px-btn--icon { padding: 10px; }
+.px-btn--icon.px-btn--sm { padding: 6px; }
+.px-btn--icon.px-btn--lg { padding: 14px; }
+
+/* pixel-display variant: the loud one */
+.px-btn--pixel {
+  font-family: var(--px-font-display);
+  font-size: 11px;
+  padding: 12px 18px;
+}
+
+/* ---- Badge -------------------------------------------------------------- */
+.px-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 4px;
+  font-family: var(--px-font-body);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  border-radius: var(--px-radius);
+}
+.px-badge--primary { background: var(--px-accent); color: var(--px-accent-ink); }
+.px-badge--secondary { background: var(--px-ink); color: var(--px-bg); border-color: var(--px-border-color); }
+.px-badge--success { background: var(--px-success); color: var(--px-success-ink); }
+.px-badge--warning { background: var(--px-warning); color: var(--px-warning-ink); }
+.px-badge--danger { background: var(--px-danger); color: var(--px-danger-ink); }
+.px-badge--info { background: var(--px-info); color: var(--px-info-ink); }
+.px-badge--outline { background: transparent; }
+.px-badge--pixel { font-family: var(--px-font-display); font-size: 8px; padding: 5px 10px; }
+
+/* ---- Avatar -------------------------------------------------------------- */
+.px-avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  font-family: var(--px-font-display);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--px-accent-ink);
+  background: var(--px-accent);
+  border: var(--px-border-w) solid var(--px-border-color);
+  border-radius: var(--px-radius);
+  box-shadow: var(--px-shadow-sm);
+  overflow: visible;
+}
+.px-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+.px-avatar--sm { width: 32px; height: 32px; font-size: 9px; }
+.px-avatar--lg { width: 64px; height: 64px; font-size: 16px; }
+.px-avatar-status {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  background: var(--px-success);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-avatar-status--away { background: var(--px-warning); }
+.px-avatar-status--busy { background: var(--px-danger); }
+.px-avatar-status--offline { background: var(--px-ink-muted); }
+
+.px-avatar-group {
+  display: inline-flex;
+}
+.px-avatar-group .px-avatar { box-shadow: none; }
+.px-avatar-group .px-avatar + .px-avatar { margin-left: -10px; }
+
+/* ---- Spinner (blocky, steps through quadrants) --------------------------- */
+.px-spinner {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background: conic-gradient(
+    var(--px-accent) 0 25%,
+    var(--px-ink) 25% 50%,
+    var(--px-accent-2) 50% 75%,
+    var(--px-ink) 75% 100%
+  );
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  animation: px-spin 0.9s steps(4) infinite;
+}
+.px-spinner--sm { width: 14px; height: 14px; }
+.px-spinner--lg { width: 34px; height: 34px; }
+@keyframes px-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-spinner { animation-duration: 2.5s; }
+}
+
+/* ==========================================================================
+   PUXEL — forms: input, textarea, select, checkbox, radio, switch, slider,
+   fieldset (title-on-border section)
+   ========================================================================== */
+
+.px-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--px-space-2);
+}
+.px-field-hint {
+  font-size: 12px;
+  color: var(--px-ink-muted);
+}
+.px-field-error {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--px-danger);
+}
+
+/* ---- Input / Textarea ----------------------------------------------------- */
+.px-input,
+.px-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: var(--px-font-body);
+  font-size: 14px;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  border-radius: var(--px-radius);
+  box-shadow: inset 3px 3px 0 0 color-mix(in srgb, var(--px-shadow-color) 12%, transparent);
+  transition: box-shadow var(--px-speed) var(--px-ease);
+}
+.px-input::placeholder,
+.px-textarea::placeholder {
+  color: var(--px-ink-muted);
+}
+.px-input:focus,
+.px-textarea:focus {
+  outline: none;
+  box-shadow: var(--px-shadow);
+}
+.px-input:disabled,
+.px-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--px-surface-2);
+}
+.px-input--error,
+.px-textarea--error {
+  border-color: var(--px-danger);
+  box-shadow: inset 3px 3px 0 0 color-mix(in srgb, var(--px-danger) 20%, transparent);
+}
+.px-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* input with attached addon (search icon, prefix, button) */
+.px-input-group {
+  display: flex;
+  align-items: stretch;
+}
+.px-input-group .px-input { flex: 1; }
+.px-input-group > * + * { margin-left: calc(var(--px-border-w) * -1); }
+.px-input-addon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  font-weight: 800;
+  font-size: 13px;
+  background: var(--px-surface-2);
+  border: var(--px-border-w) solid var(--px-border-color);
+}
+
+/* ---- Select ---------------------------------------------------------------- */
+.px-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.px-select select {
+  width: 100%;
+  padding: 10px 40px 10px 12px;
+  font-family: var(--px-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  border-radius: var(--px-radius);
+  box-shadow: var(--px-shadow-sm);
+  appearance: none;
+  cursor: pointer;
+}
+.px-select::after {
+  content: "▼";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  pointer-events: none;
+  color: var(--px-ink);
+}
+.px-select select:focus { outline: none; }
+.px-select select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Checkbox ---------------------------------------------------------------- */
+.px-check,
+.px-radio,
+.px-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--px-space-3);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  user-select: none;
+}
+.px-check input,
+.px-radio input,
+.px-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.px-check-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+  transition: background var(--px-speed) var(--px-ease);
+}
+.px-check-box::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: var(--px-accent-ink);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transition: transform var(--px-speed) var(--px-ease);
+}
+.px-check input:checked ~ .px-check-box {
+  background: var(--px-accent);
+}
+.px-check input:checked ~ .px-check-box::after {
+  transform: scale(1);
+}
+.px-check input:disabled ~ * { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Radio ---------------------------------------------------------------- */
+.px-radio-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+}
+.px-radio-dot::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--px-ink);
+  transform: scale(0);
+  transition: transform var(--px-speed) var(--px-ease);
+}
+.px-radio input:checked ~ .px-radio-dot::after { transform: scale(1); }
+.px-radio input:disabled ~ * { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Switch ---------------------------------------------------------------- */
+.px-switch-track {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+  background: var(--px-surface-2);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+  transition: background var(--px-speed) var(--px-ease);
+}
+.px-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--px-ink);
+  transition: transform var(--px-speed) var(--px-ease);
+}
+.px-switch input:checked ~ .px-switch-track {
+  background: var(--px-success);
+}
+.px-switch input:checked ~ .px-switch-track::after {
+  transform: translateX(22px);
+  background: var(--px-surface);
+}
+.px-switch input:disabled ~ * { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Slider ---------------------------------------------------------------- */
+.px-slider {
+  appearance: none;
+  width: 100%;
+  height: 26px;
+  background: transparent;
+  cursor: pointer;
+}
+.px-slider::-webkit-slider-runnable-track {
+  height: 12px;
+  background: var(--px-surface-2);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -8px;
+  background: var(--px-accent);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+}
+.px-slider::-moz-range-track {
+  height: 12px;
+  background: var(--px-surface-2);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  background: var(--px-accent);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+}
+.px-slider:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Fieldset: the title-on-border section (nes-ui style, modernized) ------ */
+.px-fieldset {
+  position: relative;
+  padding: var(--px-space-5);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  border-radius: var(--px-radius);
+}
+.px-fieldset--shadow { box-shadow: var(--px-shadow); }
+.px-fieldset-title {
+  position: absolute;
+  top: 0;
+  left: var(--px-space-4);
+  transform: translateY(-50%);
+  padding: 2px 10px;
+  font-family: var(--px-font-display);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-fieldset-title--accent {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+}
+.px-fieldset-title--center {
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.px-fieldset-title--right {
+  left: auto;
+  right: var(--px-space-4);
+}
+
+/* ==========================================================================
+   PUXEL — containers & navigation: card, alert, toast, tabs, accordion,
+   table, dialog, menu, tooltip, breadcrumb, pagination
+   ========================================================================== */
+
+/* ---- Card ------------------------------------------------------------- */
+.px-card {
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  border-radius: var(--px-radius);
+  box-shadow: var(--px-shadow);
+}
+.px-card--flat { box-shadow: none; }
+.px-card--hover {
+  transition:
+    transform var(--px-speed) var(--px-ease),
+    box-shadow var(--px-speed) var(--px-ease);
+}
+.px-card--hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--px-shadow-lg);
+}
+.px-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--px-space-3);
+  padding: var(--px-space-4) var(--px-space-5);
+  border-bottom: var(--px-border-w) solid var(--px-border-color);
+}
+.px-card-header--accent { background: var(--px-accent); color: var(--px-accent-ink); }
+.px-card-title {
+  margin: 0;
+  font-family: var(--px-font-display);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.px-card-body { padding: var(--px-space-5); }
+.px-card-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--px-space-3);
+  padding: var(--px-space-4) var(--px-space-5);
+  border-top: var(--px-border-w) solid var(--px-border-color);
+  background: var(--px-surface-2);
+}
+
+/* ---- Alert -------------------------------------------------------------- */
+.px-alert {
+  display: flex;
+  gap: var(--px-space-3);
+  padding: var(--px-space-4);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  border-left-width: 10px;
+  box-shadow: var(--px-shadow-sm);
+}
+.px-alert-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  font-weight: 900;
+  font-size: 14px;
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-alert-title {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.px-alert-body { font-size: 13px; margin: 0; }
+.px-alert--info { border-left-color: var(--px-info); }
+.px-alert--info .px-alert-icon { background: var(--px-info); color: var(--px-info-ink); }
+.px-alert--success { border-left-color: var(--px-success); }
+.px-alert--success .px-alert-icon { background: var(--px-success); color: var(--px-success-ink); }
+.px-alert--warning { border-left-color: var(--px-warning); }
+.px-alert--warning .px-alert-icon { background: var(--px-warning); color: var(--px-warning-ink); }
+.px-alert--danger { border-left-color: var(--px-danger); }
+.px-alert--danger .px-alert-icon { background: var(--px-danger); color: var(--px-danger-ink); }
+
+/* ---- Toast --------------------------------------------------------------- */
+.px-toast-viewport {
+  position: fixed;
+  bottom: var(--px-space-5);
+  right: var(--px-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--px-space-3);
+  z-index: 300;
+}
+.px-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--px-space-3);
+  min-width: 260px;
+  max-width: 360px;
+  padding: var(--px-space-3) var(--px-space-4);
+  background: var(--px-ink);
+  color: var(--px-bg);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+  font-size: 13px;
+  font-weight: 600;
+  animation: px-toast-in 180ms var(--px-ease);
+}
+.px-toast--success { background: var(--px-success); color: var(--px-success-ink); }
+.px-toast--danger { background: var(--px-danger); color: var(--px-danger-ink); }
+.px-toast--warning { background: var(--px-warning); color: var(--px-warning-ink); }
+.px-toast-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0 2px;
+}
+@keyframes px-toast-in {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-toast { animation: none; }
+}
+
+/* ---- Tabs ------------------------------------------------------------------ */
+.px-tabs-list {
+  display: flex;
+  gap: var(--px-space-2);
+  flex-wrap: wrap;
+}
+.px-tab {
+  padding: 8px 16px;
+  font-family: var(--px-font-body);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--px-ink-muted);
+  background: var(--px-surface-2);
+  border: var(--px-border-w) solid var(--px-border-color);
+  border-bottom: none;
+  cursor: pointer;
+  transform: translateY(var(--px-border-w));
+}
+.px-tab[aria-selected="true"] {
+  color: var(--px-ink);
+  background: var(--px-surface);
+  position: relative;
+  z-index: 1;
+}
+.px-tab[aria-selected="true"]::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--px-border-w) * -1);
+  height: var(--px-border-w);
+  background: var(--px-surface);
+}
+.px-tabs-panel {
+  padding: var(--px-space-5);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+}
+
+/* boxed variant: pills instead of folder tabs */
+.px-tabs--boxed .px-tab {
+  border-bottom: var(--px-border-w) solid var(--px-border-color);
+  transform: none;
+  box-shadow: var(--px-shadow-sm);
+}
+.px-tabs--boxed .px-tab[aria-selected="true"] {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+.px-tabs--boxed .px-tab[aria-selected="true"]::after { display: none; }
+.px-tabs--boxed .px-tabs-panel {
+  margin-top: var(--px-space-3);
+}
+
+/* ---- Accordion --------------------------------------------------------------- */
+.px-accordion {
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+  background: var(--px-surface);
+}
+.px-accordion-item + .px-accordion-item {
+  border-top: var(--px-border-w) solid var(--px-border-color);
+}
+.px-accordion-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--px-space-3);
+  width: 100%;
+  padding: var(--px-space-4);
+  font-family: var(--px-font-body);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: none;
+  cursor: pointer;
+}
+.px-accordion-trigger:hover { background: var(--px-surface-2); }
+.px-accordion-trigger[aria-expanded="true"] {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+}
+.px-accordion-indicator {
+  font-family: var(--px-font-display);
+  font-size: 10px;
+  transition: transform var(--px-speed) var(--px-ease);
+}
+.px-accordion-trigger[aria-expanded="true"] .px-accordion-indicator {
+  transform: rotate(90deg);
+}
+.px-accordion-content {
+  padding: var(--px-space-4);
+  font-size: 14px;
+  border-top: var(--px-border-w-thin) dashed var(--px-border-color);
+}
+
+/* ---- Table ------------------------------------------------------------------- */
+.px-table-wrap {
+  overflow-x: auto;
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+  background: var(--px-surface);
+}
+.px-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.px-table th {
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--px-accent-ink);
+  background: var(--px-accent);
+  border-bottom: var(--px-border-w) solid var(--px-border-color);
+}
+.px-table td {
+  padding: 10px 14px;
+  border-bottom: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-table tbody tr:last-child td { border-bottom: none; }
+.px-table--striped tbody tr:nth-child(even) { background: var(--px-surface-2); }
+.px-table--hover tbody tr:hover { background: var(--px-selection); color: var(--px-ink); }
+
+/* ---- Dialog --------------------------------------------------------------------- */
+.px-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+.px-dialog {
+  padding: 0;
+  max-width: min(480px, calc(100vw - 32px));
+  background: var(--px-surface);
+  color: var(--px-ink);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-lg);
+}
+.px-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--px-space-3);
+  padding: var(--px-space-4) var(--px-space-5);
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+  border-bottom: var(--px-border-w) solid var(--px-border-color);
+}
+.px-dialog-title {
+  margin: 0;
+  font-family: var(--px-font-display);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.px-dialog-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: 900;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+.px-dialog-body { padding: var(--px-space-5); font-size: 14px; }
+.px-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--px-space-3);
+  padding: var(--px-space-4) var(--px-space-5);
+  border-top: var(--px-border-w) solid var(--px-border-color);
+  background: var(--px-surface-2);
+}
+
+/* ---- Menu (dropdown) ---------------------------------------------------------------- */
+.px-menu {
+  position: relative;
+  display: inline-block;
+}
+.px-menu-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  margin: 0;
+  padding: var(--px-space-1);
+  list-style: none;
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+  z-index: 100;
+}
+.px-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--px-space-2);
+  width: 100%;
+  padding: 8px 12px;
+  font-family: var(--px-font-body);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  color: var(--px-ink);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.px-menu-item:hover,
+.px-menu-item[data-active="true"] {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+}
+.px-menu-item--danger { color: var(--px-danger); }
+.px-menu-item--danger:hover { background: var(--px-danger); color: var(--px-danger-ink); }
+.px-menu-separator {
+  height: 0;
+  margin: var(--px-space-1) 0;
+  border-top: var(--px-border-w-thin) dashed var(--px-border-color);
+}
+
+/* ---- Tooltip ------------------------------------------------------------------------- */
+.px-tooltip-wrap {
+  position: relative;
+  display: inline-block;
+}
+.px-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--px-bg);
+  background: var(--px-ink);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--px-speed) var(--px-ease);
+  z-index: 200;
+}
+.px-tooltip-wrap:hover .px-tooltip,
+.px-tooltip-wrap:focus-within .px-tooltip {
+  opacity: 1;
+}
+
+/* ---- Breadcrumb ------------------------------------------------------------------------ */
+.px-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--px-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+.px-breadcrumb li {
+  display: flex;
+  align-items: center;
+  gap: var(--px-space-2);
+}
+.px-breadcrumb li + li::before {
+  content: "▸";
+  color: var(--px-ink-muted);
+}
+.px-breadcrumb a {
+  color: var(--px-ink-muted);
+  text-decoration: none;
+}
+.px-breadcrumb a:hover {
+  color: var(--px-ink);
+  background: var(--px-accent);
+}
+.px-breadcrumb [aria-current="page"] {
+  color: var(--px-ink);
+  background: var(--px-surface-2);
+  padding: 1px 8px;
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+
+/* ---- Pagination ---------------------------------------------------------------------------- */
+.px-pagination {
+  display: flex;
+  gap: var(--px-space-2);
+  align-items: center;
+}
+.px-pagination-btn {
+  min-width: 38px;
+  padding: 7px 10px;
+  font-family: var(--px-font-body);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+  cursor: pointer;
+  transition: transform var(--px-speed) var(--px-ease), box-shadow var(--px-speed) var(--px-ease);
+}
+.px-pagination-btn:hover:not(:disabled):not([aria-current="page"]) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 var(--px-shadow-color);
+}
+.px-pagination-btn[aria-current="page"] {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+  transform: translate(2px, 2px);
+  box-shadow: none;
+  cursor: default;
+}
+.px-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.px-pagination-ellipsis {
+  padding: 0 4px;
+  font-weight: 800;
+  color: var(--px-ink-muted);
+}
+
+/* ==========================================================================
+   PUXEL — game components: progress, health bar, XP bar, score, stat,
+   splash/intro screen
+   ========================================================================== */
+
+/* ---- Progress (continuous) ------------------------------------------------ */
+.px-progress {
+  position: relative;
+  height: 24px;
+  background: var(--px-surface-2);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+  overflow: hidden;
+}
+.px-progress-fill {
+  height: 100%;
+  background: var(--px-accent);
+  border-right: var(--px-border-w-thin) solid var(--px-border-color);
+  transition: width 300ms var(--px-ease);
+}
+.px-progress-fill--striped {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 8px,
+    color-mix(in srgb, var(--px-shadow-color) 22%, transparent) 8px 16px
+  );
+  background-color: var(--px-accent);
+}
+.px-progress-fill--animated {
+  animation: px-stripes 0.8s linear infinite;
+}
+@keyframes px-stripes {
+  to { background-position: 22px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-progress-fill--animated { animation: none; }
+}
+.px-progress-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--px-font-display);
+  font-size: 8px;
+  color: var(--px-ink);
+  mix-blend-mode: normal;
+}
+.px-progress--success .px-progress-fill { background-color: var(--px-success); }
+.px-progress--danger .px-progress-fill { background-color: var(--px-danger); }
+.px-progress--info .px-progress-fill { background-color: var(--px-info); }
+
+/* ---- Health bar (segmented cells) ------------------------------------------ */
+.px-healthbar {
+  display: flex;
+  align-items: center;
+  gap: var(--px-space-3);
+}
+.px-healthbar-label {
+  font-family: var(--px-font-display);
+  font-size: 9px;
+  text-transform: uppercase;
+  min-width: 30px;
+}
+.px-healthbar-cells {
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  background: var(--px-surface-2);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+}
+.px-healthbar-cell {
+  width: 12px;
+  height: 16px;
+  background: var(--px-surface);
+  border: 1px solid color-mix(in srgb, var(--px-border-color) 35%, transparent);
+}
+.px-healthbar-cell--full {
+  background: var(--px-success);
+  border-color: var(--px-border-color);
+}
+.px-healthbar--hp .px-healthbar-cell--full { background: var(--px-danger); }
+.px-healthbar--mp .px-healthbar-cell--full { background: var(--px-info); }
+.px-healthbar--xp .px-healthbar-cell--full { background: var(--px-accent-2); }
+/* low health: pulse the remaining cells */
+.px-healthbar--critical .px-healthbar-cell--full {
+  animation: px-blink 0.6s steps(2) infinite;
+}
+@keyframes px-blink {
+  50% { opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-healthbar--critical .px-healthbar-cell--full { animation: none; }
+}
+
+/* ---- Score display ------------------------------------------------------------ */
+.px-score {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--px-space-3) var(--px-space-4);
+  background: var(--px-ink);
+  color: var(--px-bg);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+}
+.px-score-label {
+  font-family: var(--px-font-display);
+  font-size: 8px;
+  text-transform: uppercase;
+  color: var(--px-accent);
+}
+.px-score-value {
+  font-family: var(--px-font-display);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.px-score--surface {
+  background: var(--px-surface);
+  color: var(--px-ink);
+}
+.px-score--surface .px-score-label { color: var(--px-accent-2); }
+
+/* ---- Stat (label + value + delta, dashboard flavor) ----------------------------- */
+.px-stat {
+  padding: var(--px-space-4);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+}
+.px-stat-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--px-ink-muted);
+}
+.px-stat-value {
+  font-family: var(--px-font-display);
+  font-size: 22px;
+  margin: 6px 0 4px;
+}
+.px-stat-delta {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 1px 7px;
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-stat-delta--up { background: var(--px-success); color: var(--px-success-ink); }
+.px-stat-delta--down { background: var(--px-danger); color: var(--px-danger-ink); }
+
+/* ---- Splash / intro screen -------------------------------------------------------- */
+.px-splash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--px-space-5);
+  padding: var(--px-space-7) var(--px-space-5);
+  text-align: center;
+  background: var(--px-bg);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-lg);
+}
+.px-splash-title {
+  margin: 0;
+  font-family: var(--px-font-display);
+  font-size: clamp(20px, 5vw, 36px);
+  text-transform: uppercase;
+  text-shadow: 4px 4px 0 var(--px-accent);
+}
+.px-splash-subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--px-ink-muted);
+}
+.px-splash-prompt {
+  font-family: var(--px-font-display);
+  font-size: 10px;
+  text-transform: uppercase;
+  animation: px-blink 1.1s steps(2) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-splash-prompt { animation: none; }
+}
+
+.preview-root { padding: 28px; display: flex; flex-direction: column; gap: 18px; min-height: 100vh; }
+.preview-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.preview-col { display: flex; flex-direction: column; gap: 12px; }
+.preview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+</style>
+</head>
+<body>
+<div class="preview-root">
+
+<div class="preview-grid">
+  <div class="px-card">
+    <div class="px-card-header px-card-header--accent">
+      <h3 class="px-card-title">Quest log</h3>
+      <span class="px-badge px-badge--secondary">3 new</span>
+    </div>
+    <div class="px-card-body">Defeat the Deadline Dragon before Friday. Reward: 500 XP.</div>
+    <div class="px-card-footer">
+      <button class="px-btn px-btn--sm px-btn--primary">Accept</button>
+      <button class="px-btn px-btn--sm px-btn--ghost">Later</button>
+    </div>
+  </div>
+  <div class="px-card px-card--hover">
+    <div class="px-card-header"><h3 class="px-card-title">Hover card</h3></div>
+    <div class="px-card-body">Lifts on hover — for clickable list items and links.</div>
+  </div>
+</div>
+</div>
+</body>
+</html>

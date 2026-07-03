@@ -1,0 +1,190 @@
+/* ==========================================================================
+   PUXEL — game components: progress, health bar, XP bar, score, stat,
+   splash/intro screen
+   ========================================================================== */
+
+/* ---- Progress (continuous) ------------------------------------------------ */
+.px-progress {
+  position: relative;
+  height: 24px;
+  background: var(--px-surface-2);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+  overflow: hidden;
+}
+.px-progress-fill {
+  height: 100%;
+  background: var(--px-accent);
+  border-right: var(--px-border-w-thin) solid var(--px-border-color);
+  transition: width 300ms var(--px-ease);
+}
+.px-progress-fill--striped {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 8px,
+    color-mix(in srgb, var(--px-shadow-color) 22%, transparent) 8px 16px
+  );
+  background-color: var(--px-accent);
+}
+.px-progress-fill--animated {
+  animation: px-stripes 0.8s linear infinite;
+}
+@keyframes px-stripes {
+  to { background-position: 22px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-progress-fill--animated { animation: none; }
+}
+.px-progress-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--px-font-display);
+  font-size: 8px;
+  color: var(--px-ink);
+  mix-blend-mode: normal;
+}
+.px-progress--success .px-progress-fill { background-color: var(--px-success); }
+.px-progress--danger .px-progress-fill { background-color: var(--px-danger); }
+.px-progress--info .px-progress-fill { background-color: var(--px-info); }
+
+/* ---- Health bar (segmented cells) ------------------------------------------ */
+.px-healthbar {
+  display: flex;
+  align-items: center;
+  gap: var(--px-space-3);
+}
+.px-healthbar-label {
+  font-family: var(--px-font-display);
+  font-size: 9px;
+  text-transform: uppercase;
+  min-width: 30px;
+}
+.px-healthbar-cells {
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  background: var(--px-surface-2);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-sm);
+}
+.px-healthbar-cell {
+  width: 12px;
+  height: 16px;
+  background: var(--px-surface);
+  border: 1px solid color-mix(in srgb, var(--px-border-color) 35%, transparent);
+}
+.px-healthbar-cell--full {
+  background: var(--px-success);
+  border-color: var(--px-border-color);
+}
+.px-healthbar--hp .px-healthbar-cell--full { background: var(--px-danger); }
+.px-healthbar--mp .px-healthbar-cell--full { background: var(--px-info); }
+.px-healthbar--xp .px-healthbar-cell--full { background: var(--px-accent-2); }
+/* low health: pulse the remaining cells */
+.px-healthbar--critical .px-healthbar-cell--full {
+  animation: px-blink 0.6s steps(2) infinite;
+}
+@keyframes px-blink {
+  50% { opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-healthbar--critical .px-healthbar-cell--full { animation: none; }
+}
+
+/* ---- Score display ------------------------------------------------------------ */
+.px-score {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--px-space-3) var(--px-space-4);
+  background: var(--px-ink);
+  color: var(--px-bg);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+}
+.px-score-label {
+  font-family: var(--px-font-display);
+  font-size: 8px;
+  text-transform: uppercase;
+  color: var(--px-accent);
+}
+.px-score-value {
+  font-family: var(--px-font-display);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.px-score--surface {
+  background: var(--px-surface);
+  color: var(--px-ink);
+}
+.px-score--surface .px-score-label { color: var(--px-accent-2); }
+
+/* ---- Stat (label + value + delta, dashboard flavor) ----------------------------- */
+.px-stat {
+  padding: var(--px-space-4);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+}
+.px-stat-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--px-ink-muted);
+}
+.px-stat-value {
+  font-family: var(--px-font-display);
+  font-size: 22px;
+  margin: 6px 0 4px;
+}
+.px-stat-delta {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 1px 7px;
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-stat-delta--up { background: var(--px-success); color: var(--px-success-ink); }
+.px-stat-delta--down { background: var(--px-danger); color: var(--px-danger-ink); }
+
+/* ---- Splash / intro screen -------------------------------------------------------- */
+.px-splash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--px-space-5);
+  padding: var(--px-space-7) var(--px-space-5);
+  text-align: center;
+  background: var(--px-bg);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow-lg);
+}
+.px-splash-title {
+  margin: 0;
+  font-family: var(--px-font-display);
+  font-size: clamp(20px, 5vw, 36px);
+  text-transform: uppercase;
+  text-shadow: 4px 4px 0 var(--px-accent);
+}
+.px-splash-subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--px-ink-muted);
+}
+.px-splash-prompt {
+  font-family: var(--px-font-display);
+  font-size: 10px;
+  text-transform: uppercase;
+  animation: px-blink 1.1s steps(2) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-splash-prompt { animation: none; }
+}

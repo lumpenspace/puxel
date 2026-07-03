@@ -1,0 +1,175 @@
+/* ==========================================================================
+   PUXEL — design tokens
+   Brutalist/retro UI kit. Themes are applied with [data-theme="…"] on any
+   ancestor (usually <html>). Every component reads only from these variables.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/press-start-2p.woff2") format("woff2");
+}
+
+:root {
+  /* ---- primitives (theme-independent) ---- */
+  --px-font-display: "Press Start 2P", "Courier New", monospace;
+  --px-font-body: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --px-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --px-space-1: 4px;
+  --px-space-2: 8px;
+  --px-space-3: 12px;
+  --px-space-4: 16px;
+  --px-space-5: 24px;
+  --px-space-6: 32px;
+  --px-space-7: 48px;
+
+  --px-border-w: 3px;
+  --px-border-w-thin: 2px;
+  --px-radius: 0px;
+
+  --px-shadow-x: 4px;
+  --px-shadow-y: 4px;
+  --px-shadow: var(--px-shadow-x) var(--px-shadow-y) 0 0 var(--px-shadow-color);
+  --px-shadow-sm: 2px 2px 0 0 var(--px-shadow-color);
+  --px-shadow-lg: 8px 8px 0 0 var(--px-shadow-color);
+
+  --px-speed: 120ms;
+  --px-ease: cubic-bezier(0.2, 0.8, 0.4, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --px-speed: 0ms;
+  }
+}
+
+/* ==========================================================================
+   THEME: paper (default light) — cream + ink, punchy accents
+   ========================================================================== */
+:root,
+[data-theme="paper"] {
+  color-scheme: light;
+
+  --px-bg: #faf3e3;
+  --px-surface: #fffdf5;
+  --px-surface-2: #f3e9d2;
+  --px-ink: #16130d;
+  --px-ink-muted: #6b6455;
+  --px-border-color: #16130d;
+  --px-shadow-color: #16130d;
+
+  --px-accent: #ffd23f;
+  --px-accent-ink: #16130d;
+  --px-accent-2: #ff6b35;
+  --px-accent-2-ink: #16130d;
+
+  --px-success: #00a868;
+  --px-success-ink: #ffffff;
+  --px-warning: #ffb02e;
+  --px-warning-ink: #16130d;
+  --px-danger: #ef3e36;
+  --px-danger-ink: #ffffff;
+  --px-info: #2d7ff9;
+  --px-info-ink: #ffffff;
+
+  --px-selection: #ffd23f;
+}
+
+/* ==========================================================================
+   THEME: midnight (dark) — near-black + off-white ink, yellow/violet neon
+   ========================================================================== */
+[data-theme="midnight"] {
+  color-scheme: dark;
+
+  --px-bg: #0f1115;
+  --px-surface: #1a1d24;
+  --px-surface-2: #242833;
+  --px-ink: #f2f0e9;
+  --px-ink-muted: #9a97a3;
+  --px-border-color: #f2f0e9;
+  --px-shadow-color: #000000;
+
+  --px-accent: #ffd23f;
+  --px-accent-ink: #16130d;
+  --px-accent-2: #8b7bff;
+  --px-accent-2-ink: #0f1115;
+
+  --px-success: #3ddc84;
+  --px-success-ink: #0f1115;
+  --px-warning: #ffb02e;
+  --px-warning-ink: #16130d;
+  --px-danger: #ff5c57;
+  --px-danger-ink: #0f1115;
+  --px-info: #58a6ff;
+  --px-info-ink: #0f1115;
+
+  --px-selection: #8b7bff;
+}
+
+/* ==========================================================================
+   THEME: arcade — NES deep blue, cabinet red + coin gold
+   ========================================================================== */
+[data-theme="arcade"] {
+  color-scheme: dark;
+
+  --px-bg: #171c48;
+  --px-surface: #212a6b;
+  --px-surface-2: #2b3585;
+  --px-ink: #ffffff;
+  --px-ink-muted: #9aa3e0;
+  --px-border-color: #ffffff;
+  --px-shadow-color: #0a0d29;
+
+  --px-accent: #ff4245;
+  --px-accent-ink: #ffffff;
+  --px-accent-2: #ffc93c;
+  --px-accent-2-ink: #171c48;
+
+  --px-success: #6ecb63;
+  --px-success-ink: #171c48;
+  --px-warning: #ffc93c;
+  --px-warning-ink: #171c48;
+  --px-danger: #ff4245;
+  --px-danger-ink: #ffffff;
+  --px-info: #4da6ff;
+  --px-info-ink: #171c48;
+
+  --px-selection: #ffc93c;
+}
+
+/* ==========================================================================
+   THEME: terminal — CRT phosphor green on black, amber secondary
+   ========================================================================== */
+[data-theme="terminal"] {
+  color-scheme: dark;
+
+  --px-bg: #060c06;
+  --px-surface: #0a140a;
+  --px-surface-2: #102010;
+  --px-ink: #33ff66;
+  --px-ink-muted: #1e9e44;
+  --px-border-color: #33ff66;
+  --px-shadow-color: #124d24;
+
+  --px-accent: #33ff66;
+  --px-accent-ink: #060c06;
+  --px-accent-2: #ffbf00;
+  --px-accent-2-ink: #060c06;
+
+  --px-success: #33ff66;
+  --px-success-ink: #060c06;
+  --px-warning: #ffbf00;
+  --px-warning-ink: #060c06;
+  --px-danger: #ff5c57;
+  --px-danger-ink: #060c06;
+  --px-info: #38d1ff;
+  --px-info-ink: #060c06;
+
+  --px-selection: #33ff66;
+
+  /* the terminal speaks mono */
+  --px-font-body: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}

@@ -1,0 +1,19 @@
+{
+  "shape": "package",
+  "pkg": "puxel",
+  "globalName": "Puxel",
+  "buildCmd": "npm run build:lib",
+  "cssEntry": "dist/puxel.css",
+  "docsDir": ".design-sync/docs",
+  "readmeHeader": ".design-sync/conventions.md",
+  "provider": {
+    "component": "ThemeProvider"
+  },
+  "overrides": {
+    "Dialog": { "cardMode": "single", "viewport": "520x420" },
+    "Menu": { "cardMode": "single", "viewport": "360x320" },
+    "ToastProvider": { "skip": ["Live"] },
+    "Fieldset": { "cardMode": "column" },
+    "Pagination": { "cardMode": "column" }
+  }
+}

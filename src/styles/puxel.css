@@ -1,0 +1,7 @@
+/* PUXEL — single entry point. Import this and you have the whole kit. */
+@import "./tokens.css";
+@import "./base.css";
+@import "./controls.css";
+@import "./forms.css";
+@import "./containers.css";
+@import "./game.css";

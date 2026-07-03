@@ -1,0 +1,160 @@
+/* ==========================================================================
+   PUXEL — base + utilities
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--px-bg);
+  color: var(--px-ink);
+  font-family: var(--px-font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--px-selection);
+  color: var(--px-ink);
+}
+
+/* Every interactive element gets the same loud focus ring */
+.px-focusable:focus-visible,
+.px-btn:focus-visible,
+.px-input:focus-visible,
+.px-textarea:focus-visible,
+.px-select select:focus-visible,
+.px-check input:focus-visible ~ .px-check-box,
+.px-radio input:focus-visible ~ .px-radio-dot,
+.px-switch input:focus-visible ~ .px-switch-track,
+.px-slider:focus-visible,
+.px-tab:focus-visible,
+.px-accordion-trigger:focus-visible,
+.px-pagination-btn:focus-visible,
+.px-menu-trigger:focus-visible,
+.px-menu-item:focus-visible {
+  outline: var(--px-border-w) solid var(--px-accent-2);
+  outline-offset: 2px;
+}
+
+/* ---- typography ------------------------------------------------------- */
+.px-display {
+  font-family: var(--px-font-display);
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  margin: 0;
+}
+.px-display--xl { font-size: 32px; }
+.px-display--lg { font-size: 24px; }
+.px-display--md { font-size: 16px; }
+.px-display--sm { font-size: 12px; }
+.px-display--xs { font-size: 9px; }
+
+.px-label {
+  font-family: var(--px-font-body);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.px-muted { color: var(--px-ink-muted); }
+
+.px-link {
+  color: var(--px-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--px-accent);
+  text-underline-offset: 3px;
+  transition: background var(--px-speed) var(--px-ease);
+}
+.px-link:hover {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+  text-decoration-color: var(--px-ink);
+}
+
+/* ---- pixel corners (opt-in) -------------------------------------------
+   Stepped clip-path corners: the "8-bit" silhouette without going full NES.
+   Works on solid-bg elements; borders are clipped so it pairs best with
+   .px-btn--primary / badges / solid chips. */
+.px-pixelated {
+  clip-path: polygon(
+    0 6px, 3px 6px, 3px 3px, 6px 3px, 6px 0,
+    calc(100% - 6px) 0, calc(100% - 6px) 3px, calc(100% - 3px) 3px, calc(100% - 3px) 6px, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 3px) calc(100% - 6px), calc(100% - 3px) calc(100% - 3px), calc(100% - 6px) calc(100% - 3px), calc(100% - 6px) 100%,
+    6px 100%, 6px calc(100% - 3px), 3px calc(100% - 3px), 3px calc(100% - 6px), 0 calc(100% - 6px)
+  );
+}
+
+/* ---- CRT overlay (opt-in, pairs with the terminal theme) --------------- */
+.px-crt {
+  position: relative;
+}
+.px-crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ---- misc utilities ---------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.px-border { border: var(--px-border-w) solid var(--px-border-color); }
+.px-shadow { box-shadow: var(--px-shadow); }
+.px-shadow-sm { box-shadow: var(--px-shadow-sm); }
+.px-shadow-lg { box-shadow: var(--px-shadow-lg); }
+
+.px-separator {
+  border: none;
+  border-top: var(--px-border-w) solid var(--px-border-color);
+  margin: var(--px-space-5) 0;
+}
+.px-separator--dashed { border-top-style: dashed; }
+.px-separator--vertical {
+  display: inline-block;
+  align-self: stretch;
+  width: 0;
+  border-top: none;
+  border-left: var(--px-border-w) solid var(--px-border-color);
+  margin: 0 var(--px-space-4);
+}
+
+.px-kbd {
+  display: inline-block;
+  padding: 2px 7px 4px;
+  font-family: var(--px-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  border-bottom-width: 4px;
+  border-radius: var(--px-radius);
+}
