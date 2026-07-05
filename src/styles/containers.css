@@ -5,20 +5,95 @@
 
 /* ---- Card ------------------------------------------------------------- */
 .px-card {
-  background: var(--px-surface);
-  border: var(--px-border-w) solid var(--px-border-color);
+  --px-card-frame: var(--px-border-color);
+  --px-card-fill: var(--px-surface);
+  display: flex;
+  flex-direction: column;
+  background: var(--px-card-fill);
+  border: var(--px-border-w) solid var(--px-card-frame);
   border-radius: var(--px-radius);
   box-shadow: var(--px-shadow);
 }
 .px-card--flat { box-shadow: none; }
+.px-card--accent {
+  --px-card-frame: var(--px-accent-2);
+  --px-card-fill: color-mix(in srgb, var(--px-accent-2) 18%, var(--px-surface));
+}
+.px-card--danger {
+  --px-card-frame: var(--px-danger);
+  --px-card-fill: color-mix(in srgb, var(--px-danger) 18%, var(--px-surface));
+}
+.px-card--info {
+  --px-card-frame: var(--px-info);
+  --px-card-fill: color-mix(in srgb, var(--px-info) 18%, var(--px-surface));
+}
+.px-card--success {
+  --px-card-frame: var(--px-success);
+  --px-card-fill: color-mix(in srgb, var(--px-success) 18%, var(--px-surface));
+}
+.px-card--warning {
+  --px-card-frame: var(--px-warning);
+  --px-card-fill: color-mix(in srgb, var(--px-warning) 22%, var(--px-surface));
+}
 .px-card--hover {
   transition:
     transform var(--px-speed) var(--px-ease),
-    box-shadow var(--px-speed) var(--px-ease);
+    box-shadow var(--px-speed) var(--px-ease),
+    filter var(--px-speed) var(--px-ease);
 }
 .px-card--hover:hover {
   transform: translate(-2px, -2px);
   box-shadow: var(--px-shadow-lg);
+}
+
+/* Pixel-stepped cards — both the .px-pixelated (clip) and .px-card--round
+   (frame) opt-ins. A plain `border` can't follow the notched silhouette: the
+   clip shaves the corner nubs off and the fill shows through the steps, so the
+   border reads as broken at every corner. Instead we stack two clipped layers so
+   EVERY outer pixel — straight edges AND corner steps — is the border colour:
+   the card itself is a border-colour silhouette clipped to --px-pixel-clip, and
+   a ::before painted in the surface fill, inset by one border width and clipped
+   to the same shape, leaves exactly a one-border-width frame showing all around.
+   Content sits above ::before and is inset by the card's padding so the frame is
+   never covered (even by an opaque accent header/footer). box-shadow can't
+   survive the clip, so depth is the --px-pixel-shadow filter. */
+.px-card.px-pixelated,
+.px-card--round {
+  position: relative;
+  isolation: isolate;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: var(--px-border-w);
+  background: var(--px-card-frame);
+  clip-path: var(--px-pixel-clip);
+  filter: var(--px-pixel-shadow);
+}
+.px-card.px-pixelated::before,
+.px-card--round::before {
+  content: "";
+  position: absolute;
+  inset: var(--px-border-w);
+  z-index: 0;
+  background: var(--px-card-fill);
+  clip-path: var(--px-pixel-clip);
+}
+.px-card.px-pixelated > *,
+.px-card--round > * {
+  position: relative;
+  z-index: 1;
+}
+.px-card--flat.px-pixelated,
+.px-card--round.px-card--flat { filter: none; }
+.px-card--hover.px-pixelated:hover,
+.px-card--round.px-card--hover:hover { filter: var(--px-pixel-shadow-lg); }
+.px-card--tile {
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-width: 58px;
+  min-height: 58px;
+  padding: var(--px-space-3);
 }
 .px-card-header {
   display: flex;
@@ -26,7 +101,7 @@
   justify-content: space-between;
   gap: var(--px-space-3);
   padding: var(--px-space-4) var(--px-space-5);
-  border-bottom: var(--px-border-w) solid var(--px-border-color);
+  border-bottom: var(--px-border-w) solid var(--px-card-frame);
 }
 .px-card-header--accent { background: var(--px-accent); color: var(--px-accent-ink); }
 .px-card-title {
@@ -35,15 +110,368 @@
   font-size: 12px;
   text-transform: uppercase;
 }
-.px-card-body { padding: var(--px-space-5); }
+.px-card-body { flex: 1 1 auto; padding: var(--px-space-5); }
 .px-card-footer {
   display: flex;
   align-items: center;
   gap: var(--px-space-3);
+  margin-top: auto;
   padding: var(--px-space-4) var(--px-space-5);
-  border-top: var(--px-border-w) solid var(--px-border-color);
+  border-top: var(--px-border-w) solid var(--px-card-frame);
   background: var(--px-surface-2);
 }
+.px-card--compact .px-card-header {
+  padding: var(--px-space-3) var(--px-space-4);
+}
+.px-card--compact .px-card-title {
+  font-size: 10px;
+}
+.px-card--compact .px-card-body {
+  padding: var(--px-space-4);
+}
+.px-card--compact .px-card-footer {
+  padding: var(--px-space-3) var(--px-space-4);
+}
+
+/* ---- Character card (avatar + identity, pixel-rounded frame) ------------- */
+/* A seat/roster card: an avatar slot beside a name/role/model/status stack.
+   Uses the same ::before pixel-rounded frame as .px-card--round so avatars can
+   overflow the frame (perched sprites, portrait crops). A `tone` washes the
+   frame + border in a semantic colour; `state` retints the border. */
+.px-character-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  /* the frame (every outer pixel) vs. the interior wash — retinted by tone/state */
+  --px-cc-frame: var(--px-border-color);
+  --px-cc-fill: var(--px-surface);
+}
+/* Two stacked clipped layers (see .px-card--round) so every outer pixel — the
+   notched corner steps included — is the frame colour. Both sit BEHIND the
+   content, and the card is never clipped, so perched avatars and speech bubbles
+   overflow freely. */
+.px-character-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--px-cc-frame);
+  clip-path: var(--px-pixel-clip);
+  filter: var(--px-pixel-shadow);
+  transition: background var(--px-speed) var(--px-ease);
+}
+.px-character-card::after {
+  content: "";
+  position: absolute;
+  inset: var(--px-border-w);
+  z-index: -1;
+  background: var(--px-cc-fill);
+  clip-path: var(--px-pixel-clip);
+}
+.px-character-card-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+/* square-cornered variant: one bordered box with a real offset shadow */
+.px-character-card--square::before {
+  clip-path: none;
+  filter: none;
+  box-shadow: var(--px-shadow);
+  background: var(--px-cc-fill);
+  border: var(--px-border-w) solid var(--px-cc-frame);
+}
+.px-character-card--square::after { display: none; }
+.px-character-card--danger {
+  --px-cc-frame: var(--px-danger);
+  --px-cc-fill: color-mix(in srgb, var(--px-danger) 22%, var(--px-surface));
+}
+.px-character-card--info {
+  --px-cc-frame: var(--px-info);
+  --px-cc-fill: color-mix(in srgb, var(--px-info) 22%, var(--px-surface));
+}
+.px-character-card--accent {
+  --px-cc-frame: var(--px-accent-2);
+  --px-cc-fill: color-mix(in srgb, var(--px-accent-2) 22%, var(--px-surface));
+}
+/* state frames: thinking glows accent, talking keeps the tone frame */
+.px-character-card--thinking { --px-cc-frame: var(--px-accent-2); }
+
+.px-character-card--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+.px-character-card--stack .px-character-card-avatar {
+  align-self: center;
+  margin-bottom: var(--px-space-2);
+  min-height: 44px;
+}
+.px-character-card--stack .px-character-card-info {
+  text-align: center;
+}
+.px-character-card--stack .px-character-card-model {
+  justify-content: center;
+}
+.px-character-card--compact {
+  gap: 8px;
+  padding: 8px;
+}
+.px-character-card--compact .px-character-card-name {
+  font-size: 9px;
+}
+.px-character-card--compact .px-character-card-role {
+  font-size: 6px;
+  margin-top: 4px;
+}
+.px-character-card--compact .px-character-card-model {
+  font-size: 9px;
+}
+.px-character-card--compact .px-character-card-status {
+  font-size: 8px;
+  min-height: 10px;
+}
+
+.px-character-card-info { min-width: 0; }
+.px-character-card-name {
+  font-family: var(--px-font-display);
+  font-size: 10px;
+}
+.px-character-card-role {
+  font-family: var(--px-font-display);
+  font-size: 7px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--px-ink-muted);
+  margin-top: 5px;
+}
+.px-character-card-model {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+  font-family: var(--px-font-mono);
+  font-size: 10px;
+  color: var(--px-ink-muted);
+  word-break: break-all;
+}
+.px-character-card-status {
+  font-size: 10px;
+  color: var(--px-accent-2);
+  margin-top: 3px;
+  min-height: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---- Popover (portalled hover/focus info-card) --------------------------- */
+/* The <Popover> component portals a fixed-positioned wrapper to <body> and
+   renders this card inside it, so .px-popover itself is just the framed panel
+   (no positioning) — usable standalone too. */
+.px-popover {
+  width: 240px;
+  padding: 12px;
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+  animation: px-pop-in 0.14s var(--px-ease);
+}
+@keyframes px-pop-in {
+  from { opacity: 0; }
+}
+.px-popover-title {
+  font-family: var(--px-font-display);
+  font-size: 12px;
+  color: var(--px-ink);
+  margin-bottom: 9px;
+}
+.px-popover-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.px-popover-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 9px;
+  font-family: var(--px-font-mono);
+  font-size: 10px;
+  color: var(--px-ink-muted);
+  word-break: break-all;
+}
+.px-popover-stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: var(--px-border-w-thin) solid var(--px-border-color);
+  font-size: 11px;
+  color: var(--px-ink-muted);
+}
+.px-popover-stats b {
+  color: var(--px-ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.px-trigger {
+  cursor: help;
+  outline: none;
+}
+
+/* ---- Chat (message feed with actions + turn separators) ------------------ */
+.px-chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+}
+.px-chat-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--px-font-display);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--px-ink);
+  padding: 9px 14px;
+  background: var(--px-surface-2);
+  border-bottom: var(--px-border-w) solid var(--px-border-color);
+}
+.px-chat-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--px-ink);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.px-chat-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  min-height: 0;
+  padding: 12px;
+}
+.px-chat-footer {
+  padding: 10px;
+  background: var(--px-surface-2);
+  border-top: var(--px-border-w) solid var(--px-border-color);
+}
+.px-chat-composer {
+  display: flex;
+  align-items: stretch;
+  gap: var(--px-space-2);
+}
+.px-chat-composer-input {
+  min-width: 0;
+  flex: 1 1 auto;
+  font-size: 12px;
+}
+.px-chat-composer-send {
+  flex: 0 0 auto;
+  padding-inline: 12px;
+  font-size: 12px;
+  box-shadow: none;
+}
+.px-chat-composer-send:hover {
+  box-shadow: 2px 2px 0 0 var(--px-shadow-color);
+}
+/* message: avatar + name/text body */
+.px-chat-msg {
+  display: flex;
+  gap: 9px;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.px-chat-avatar {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.px-chat-body { min-width: 0; }
+.px-chat-name {
+  display: block;
+  font-weight: 800;
+  font-size: 11px;
+}
+.px-chat-msg--danger .px-chat-name { color: var(--px-danger); }
+.px-chat-msg--info .px-chat-name { color: var(--px-info); }
+.px-chat-msg--accent .px-chat-name { color: var(--px-accent-2); }
+.px-chat-text { color: var(--px-ink); }
+/* host/system line — no avatar, italic accent */
+.px-chat-msg--host {
+  display: block;
+  font-style: italic;
+  color: var(--px-accent-2);
+}
+/* turn separator: a centered label between two rules */
+.px-chat-turn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--px-font-display);
+  font-size: 7px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--px-ink-muted);
+}
+.px-chat-turn::before,
+.px-chat-turn::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: var(--px-border-color);
+  opacity: 0.4;
+}
+.px-chat-turn--danger span { color: var(--px-danger); }
+.px-chat-turn--info span { color: var(--px-info); }
+/* action chip: a tagged move/event line, tone-railed */
+.px-chat-action {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 5px 8px;
+  background: var(--px-surface-2);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+}
+.px-chat-action-body {
+  color: var(--px-ink);
+  min-width: 0;
+}
+.px-chat-action-tag {
+  flex-shrink: 0;
+  font-family: var(--px-font-display);
+  font-size: 7px;
+  letter-spacing: 0.02em;
+  padding: 3px 5px;
+  background: var(--px-ink-muted);
+  color: var(--px-bg);
+}
+.px-chat-action--danger { box-shadow: inset 4px 0 0 var(--px-danger); }
+.px-chat-action--info { box-shadow: inset 4px 0 0 var(--px-info); }
+.px-chat-action--danger .px-chat-action-tag { background: var(--px-danger); color: var(--px-danger-ink); }
+.px-chat-action--info .px-chat-action-tag { background: var(--px-info); color: var(--px-info-ink); }
+.px-chat-action--accent .px-chat-action-tag { background: var(--px-accent-2); color: var(--px-accent-2-ink); }
 
 /* ---- Alert -------------------------------------------------------------- */
 .px-alert {
@@ -129,11 +557,260 @@
   .px-toast { animation: none; }
 }
 
+/* ---- Global animations -------------------------------------------------
+   Full-viewport, non-interactive celebration layers. Confetti is adapted from
+   the Codenames win overlay; the other variants reuse the same particle model
+   with pixel-friendly motion. */
+.px-global-animation {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+.px-global-animation-piece {
+  position: absolute;
+  display: block;
+  width: var(--px-ga-size);
+  height: var(--px-ga-size);
+  background: var(--px-ga-color);
+  border: 1px solid color-mix(in srgb, var(--px-border-color) 35%, transparent);
+  image-rendering: pixelated;
+  will-change: transform, opacity;
+  z-index: 1;
+}
+
+.px-global-animation--confetti .px-global-animation-piece {
+  top: -48px;
+  left: var(--px-ga-x);
+  animation-name: px-global-confetti-fall;
+  animation-duration: var(--px-ga-piece-duration);
+  animation-delay: var(--px-ga-piece-delay);
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+.px-global-animation--confetti .px-global-animation-piece:nth-child(3n) {
+  width: calc(var(--px-ga-size) * 0.55);
+  height: calc(var(--px-ga-size) * 1.35);
+}
+.px-global-animation--confetti .px-global-animation-piece:nth-child(4n) {
+  width: calc(var(--px-ga-size) * 1.5);
+  height: calc(var(--px-ga-size) * 0.55);
+}
+
+.px-global-animation--burst .px-global-animation-piece {
+  top: var(--px-ga-y);
+  left: var(--px-ga-x);
+  animation-name: px-global-burst;
+  animation-duration: var(--px-ga-piece-duration);
+  animation-delay: var(--px-ga-piece-delay);
+  animation-timing-function: var(--px-ease);
+  animation-fill-mode: both;
+}
+.px-global-animation--burst::before {
+  content: "";
+  position: absolute;
+  inset: calc(50% - 90px);
+  background: repeating-conic-gradient(
+    from var(--px-global-burst-ray-angle, 0deg),
+    color-mix(in srgb, var(--px-accent-2) 34%, transparent) 0 10deg,
+    transparent 10deg 20deg
+  );
+  opacity: 0;
+  --px-global-burst-opacity: 0.26;
+  animation: px-global-burst-ring 900ms var(--px-ease) both;
+  z-index: 0;
+}
+.px-global-animation .px-global-animation-sunrays {
+  position: absolute;
+  inset: calc(50% - 90px);
+  z-index: 0;
+  opacity: 0;
+  --px-global-burst-opacity: 0.9;
+  --px-global-burst-ray-angle: 0deg;
+  animation: px-global-burst-ring 900ms var(--px-ease) both;
+  filter: saturate(1.2) contrast(1.1);
+  -webkit-mask-image: repeating-conic-gradient(
+    from var(--px-global-burst-ray-angle),
+    #000 0 10deg,
+    transparent 10deg 20deg
+  );
+  mask-image: repeating-conic-gradient(
+    from var(--px-global-burst-ray-angle),
+    #000 0 10deg,
+    transparent 10deg 20deg
+  );
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+}
+
+.px-global-animation--sparkles .px-global-animation-piece {
+  top: var(--px-ga-y);
+  left: var(--px-ga-x);
+  background: transparent;
+  border: 0;
+  animation-name: px-global-sparkle;
+  animation-duration: var(--px-ga-piece-duration);
+  animation-delay: var(--px-ga-piece-delay);
+  animation-timing-function: steps(4, end);
+  animation-fill-mode: both;
+}
+.px-global-animation--sparkles .px-global-animation-piece::before,
+.px-global-animation--sparkles .px-global-animation-piece::after {
+  content: "";
+  position: absolute;
+  inset: 45% 0;
+  background: var(--px-ga-color);
+  border: 1px solid color-mix(in srgb, var(--px-border-color) 32%, transparent);
+}
+.px-global-animation--sparkles .px-global-animation-piece::after {
+  transform: rotate(90deg);
+}
+
+.px-global-animation--coin-rain .px-global-animation-piece {
+  top: -56px;
+  left: var(--px-ga-x);
+  background: var(--px-accent);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--px-accent-2) 62%, var(--px-accent));
+  animation-name: px-global-coin-rain;
+  animation-duration: var(--px-ga-piece-duration);
+  animation-delay: var(--px-ga-piece-delay);
+  animation-timing-function: cubic-bezier(0.14, 0.76, 0.24, 1);
+  animation-fill-mode: both;
+}
+.px-global-animation--coin-rain .px-global-animation-piece::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid color-mix(in srgb, var(--px-border-color) 45%, transparent);
+}
+
+.px-global-animation--scanline .px-global-animation-piece {
+  top: var(--px-ga-y);
+  left: var(--px-ga-x);
+  width: 36vw;
+  height: var(--px-ga-size);
+  background:
+    linear-gradient(90deg, transparent, var(--px-ga-color), transparent),
+    repeating-linear-gradient(90deg, transparent 0 8px, color-mix(in srgb, var(--px-border-color) 24%, transparent) 8px 10px);
+  border: 0;
+  box-shadow: 0 0 0 var(--px-border-w-thin) color-mix(in srgb, var(--px-ga-color) 28%, transparent);
+  opacity: 0;
+  animation-name: px-global-scanline;
+  animation-duration: var(--px-ga-piece-duration);
+  animation-delay: var(--px-ga-piece-delay);
+  animation-timing-function: steps(10, end);
+  animation-fill-mode: both;
+}
+
+@keyframes px-global-confetti-fall {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, -80px, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0.92;
+    transform: translate3d(var(--px-ga-drift), calc(100vh + 120px), 0) rotate(var(--px-ga-spin));
+  }
+}
+@keyframes px-global-burst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.7) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--px-ga-tx)), calc(-50% + var(--px-ga-ty))) scale(0.15) rotate(var(--px-ga-spin));
+  }
+}
+@keyframes px-global-burst-ring {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+  35% {
+    opacity: var(--px-global-burst-opacity, 0.72);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.65) rotate(90deg);
+  }
+}
+@keyframes px-global-sparkle {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.25) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(90deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-22px) scale(0.1) rotate(180deg);
+  }
+}
+@keyframes px-global-coin-rain {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, -72px, 0) rotateY(0deg) rotate(0deg);
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--px-ga-drift), calc(100vh + 96px), 0) rotateY(540deg) rotate(var(--px-ga-spin));
+  }
+}
+@keyframes px-global-scanline {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  12%,
+  72% {
+    opacity: 0.72;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--px-ga-tx), var(--px-ga-ty), 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .px-global-animation-piece,
+  .px-global-animation .px-global-animation-sunrays,
+  .px-global-animation--burst::before {
+    animation: none;
+  }
+  .px-global-animation .px-global-animation-sunrays,
+  .px-global-animation--burst::before {
+    opacity: var(--px-global-burst-opacity, 0.72);
+    transform: scale(1.1);
+  }
+  .px-global-animation--confetti .px-global-animation-piece,
+  .px-global-animation--coin-rain .px-global-animation-piece {
+    opacity: 0.85;
+    top: var(--px-ga-y);
+  }
+  .px-global-animation--burst .px-global-animation-piece,
+  .px-global-animation--sparkles .px-global-animation-piece,
+  .px-global-animation--scanline .px-global-animation-piece {
+    opacity: 0.75;
+  }
+}
+
 /* ---- Tabs ------------------------------------------------------------------ */
 .px-tabs-list {
   display: flex;
   gap: var(--px-space-2);
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  margin-bottom: calc(var(--px-border-w) * -1);
 }
 .px-tab {
   padding: 8px 16px;
@@ -145,46 +822,37 @@
   color: var(--px-ink-muted);
   background: var(--px-surface-2);
   border: var(--px-border-w) solid var(--px-border-color);
-  border-bottom: none;
+  border-bottom-color: var(--px-border-color);
   cursor: pointer;
-  transform: translateY(var(--px-border-w));
 }
 .px-tab[aria-selected="true"] {
   color: var(--px-ink);
   background: var(--px-surface);
-  position: relative;
-  z-index: 1;
-}
-.px-tab[aria-selected="true"]::after {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(var(--px-border-w) * -1);
-  height: var(--px-border-w);
-  background: var(--px-surface);
+  border-bottom-color: var(--px-surface);
 }
 .px-tabs-panel {
   padding: var(--px-space-5);
   background: var(--px-surface);
   border: var(--px-border-w) solid var(--px-border-color);
   box-shadow: var(--px-shadow);
+  position: relative;
 }
 
 /* boxed variant: pills instead of folder tabs */
+.px-tabs--boxed .px-tabs-list {
+  margin-bottom: 0;
+}
 .px-tabs--boxed .px-tab {
-  border-bottom: var(--px-border-w) solid var(--px-border-color);
-  transform: none;
+  border-bottom-color: var(--px-border-color);
   box-shadow: var(--px-shadow-sm);
 }
 .px-tabs--boxed .px-tab[aria-selected="true"] {
   background: var(--px-accent);
   color: var(--px-accent-ink);
+  border-bottom-color: var(--px-border-color);
   box-shadow: none;
   transform: translate(2px, 2px);
 }
-.px-tabs--boxed .px-tab[aria-selected="true"]::after { display: none; }
 .px-tabs--boxed .px-tabs-panel {
   margin-top: var(--px-space-3);
 }
@@ -264,7 +932,7 @@
 }
 .px-table tbody tr:last-child td { border-bottom: none; }
 .px-table--striped tbody tr:nth-child(even) { background: var(--px-surface-2); }
-.px-table--hover tbody tr:hover { background: var(--px-selection); color: var(--px-ink); }
+.px-table--hover tbody tr:hover { background: var(--px-selection); color: var(--px-selection-ink); }
 
 /* ---- Dialog --------------------------------------------------------------------- */
 .px-dialog::backdrop {
@@ -463,4 +1131,325 @@
   padding: 0 4px;
   font-weight: 800;
   color: var(--px-ink-muted);
+}
+
+/* ---- Theme switcher -------------------------------------------------------------------------- */
+.px-themeswitcher {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--px-space-2);
+}
+.px-themeswitcher-label {
+  font-family: var(--px-font-display);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: var(--px-ink-muted);
+}
+.px-themeswitcher-options {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--px-space-1);
+}
+.px-themeswitcher-option {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: var(--px-border-w-thin) solid transparent;
+  cursor: var(--px-cursor-point);
+}
+.px-themeswitcher-option:hover {
+  background: var(--px-surface-2);
+}
+.px-themeswitcher-option[aria-checked="true"] {
+  border-color: var(--px-border-color);
+  background: var(--px-surface);
+}
+.px-themeswitcher-swatch {
+  display: grid;
+  grid-template-columns: repeat(2, 5px);
+  grid-template-rows: repeat(2, 5px);
+  gap: 1px;
+  image-rendering: pixelated;
+}
+.px-themeswitcher-swatch span {
+  width: 5px;
+  height: 5px;
+  background: var(--px-theme-swatch-1);
+}
+.px-themeswitcher-swatch span:nth-child(2) {
+  background: var(--px-theme-swatch-2);
+}
+.px-themeswitcher-swatch span:nth-child(3) {
+  background: var(--px-theme-swatch-3);
+}
+.px-themeswitcher-swatch span:nth-child(4) {
+  background: var(--px-theme-swatch-4);
+}
+
+/* ---- Figure --------------------------------------------------------------------------------- */
+.px-figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--px-space-2);
+  margin: 0;
+}
+.px-figure-media {
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+  background: var(--px-surface-2);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+}
+.px-figure-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.px-figure-media.px-pixelated {
+  padding: var(--px-border-w);
+  background: var(--px-border-color);
+  border: none;
+  box-shadow: none;
+  filter: var(--px-pixel-shadow);
+}
+.px-figure-media.px-pixelated img,
+.px-figure-media.px-pixelated .px-figure-dither {
+  clip-path: var(--px-pixel-clip);
+}
+.px-figure-media.px-pixelated .px-figure-dither {
+  inset: var(--px-border-w);
+  width: calc(100% - (var(--px-border-w) * 2));
+  height: calc(100% - (var(--px-border-w) * 2));
+}
+.px-figure-dither {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.px-figure-caption {
+  display: inline-block;
+  align-self: flex-start;
+  font-family: var(--px-font-body);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--px-ink-muted);
+  background: var(--px-surface);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  padding: 3px 10px 4px;
+}
+.px-figure-caption--staggered {
+  position: relative;
+  z-index: 1;
+  margin: -14px 0 0 var(--px-space-4);
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+  transform: rotate(-1.5deg);
+}
+.px-figure-caption--above.px-figure-caption--staggered {
+  margin: 0 0 -14px var(--px-space-4);
+}
+
+/* ---- Video player -------------------------------------------------------------------------- */
+.px-video-player {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w) solid var(--px-border-color);
+  box-shadow: var(--px-shadow);
+}
+.px-video-player.px-pixelated {
+  padding: var(--px-border-w);
+  background: var(--px-border-color);
+  border: none;
+  box-shadow: none;
+  filter: var(--px-pixel-shadow);
+}
+.px-video-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--px-space-3);
+  min-width: 0;
+  padding: var(--px-space-2) var(--px-space-3);
+  border-bottom: var(--px-border-w) solid var(--px-border-color);
+  background: var(--px-surface-2);
+}
+.px-video-title {
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--px-font-display);
+  font-size: 10px;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.px-video-caption {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--px-font-body);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--px-ink-muted);
+  text-align: right;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.px-video-screen {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--px-video-aspect, 16 / 9);
+  background:
+    linear-gradient(45deg, transparent 49%, color-mix(in srgb, var(--px-ink) 22%, transparent) 50%, transparent 51%),
+    #050505;
+}
+.px-video-screen video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #050505;
+  cursor: var(--px-cursor-point);
+}
+.px-video-toolbar {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: var(--px-space-2);
+  padding: var(--px-space-2);
+  border-top: var(--px-border-w) solid var(--px-border-color);
+  background: var(--px-surface);
+}
+.px-video-button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  border-radius: var(--px-radius);
+  box-shadow: var(--px-shadow-sm);
+  cursor: var(--px-cursor-point);
+  transition:
+    transform var(--px-speed) var(--px-ease),
+    box-shadow var(--px-speed) var(--px-ease),
+    background var(--px-speed) var(--px-ease);
+}
+.px-video-button:hover {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 var(--px-shadow-color);
+}
+.px-video-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+.px-video-fullscreen {
+  position: absolute;
+  right: var(--px-space-2);
+  bottom: var(--px-space-2);
+  z-index: 1;
+  background: color-mix(in srgb, var(--px-surface) 92%, transparent);
+}
+.px-video-button:focus-visible,
+.px-video-range:focus-visible {
+  outline: 3px solid var(--px-accent-2);
+  outline-offset: 2px;
+}
+.px-video-seek-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: var(--px-space-1);
+}
+.px-video-time {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--px-space-2);
+  font-family: var(--px-font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--px-ink-muted);
+}
+.px-video-range {
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  background:
+    linear-gradient(
+      to right,
+      var(--px-accent) 0,
+      var(--px-accent) var(--px-range-value, 0%),
+      var(--px-surface-2) var(--px-range-value, 0%),
+      var(--px-surface-2) 100%
+    );
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  cursor: var(--px-cursor-point);
+}
+.px-video-range:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.px-video-range::-webkit-slider-thumb {
+  width: 12px;
+  height: 22px;
+  appearance: none;
+  background: var(--px-ink);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  box-shadow: 2px 2px 0 0 var(--px-shadow-color);
+}
+.px-video-range::-moz-range-thumb {
+  width: 12px;
+  height: 22px;
+  background: var(--px-ink);
+  border: var(--px-border-w-thin) solid var(--px-border-color);
+  border-radius: 0;
+  box-shadow: 2px 2px 0 0 var(--px-shadow-color);
+}
+.px-video-range::-moz-range-track {
+  height: 100%;
+  background: transparent;
+  border: 0;
+}
+.px-video-player:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  background: var(--px-surface);
+}
+.px-video-player:fullscreen .px-video-screen {
+  flex: 1;
+  aspect-ratio: auto;
+}
+
+@media (max-width: 560px) {
+  .px-video-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--px-space-1);
+  }
+  .px-video-caption {
+    max-width: 100%;
+    text-align: left;
+  }
 }

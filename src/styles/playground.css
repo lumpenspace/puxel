@@ -1,0 +1,179 @@
+/* Showcase-only playground layout. Not part of the shipped component CSS. */
+
+.px-playground {
+  display: grid;
+  grid-template-columns: minmax(136px, 180px) minmax(0, 1fr);
+  grid-template-areas: "menu content";
+  align-items: start;
+  gap: var(--px-space-5);
+}
+
+.px-playground-tabs {
+  grid-area: menu;
+  position: sticky;
+  top: var(--px-space-5);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-self: start;
+  width: 100%;
+}
+
+.px-playground-tabs .px-tab {
+  width: 100%;
+  text-align: left;
+}
+
+.px-playground-content {
+  grid-area: content;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.px-playground.px-tabs--boxed .px-tabs-panel {
+  margin-top: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.px-playground .px-fieldset {
+  margin-top: 14px;
+  overflow: visible;
+}
+
+.px-showcase-section-grid,
+.px-playground-playfield {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(320px, 1fr);
+  grid-template-areas: "controls result";
+  gap: var(--px-space-5);
+  align-items: start;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.px-showcase-section-target,
+.px-playground-stage {
+  grid-area: result;
+  position: relative;
+  min-width: 0;
+  background: repeating-conic-gradient(var(--px-surface-2) 0% 25%, var(--px-surface) 0% 50%) 50% / 24px 24px;
+  overflow: visible;
+}
+
+.px-showcase-section-target-body,
+.px-playground-stage-body {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: var(--px-space-6);
+}
+
+.px-playground-stage--bare {
+  background: repeating-conic-gradient(var(--px-surface-2) 0% 25%, var(--px-surface) 0% 50%) 50% / 24px 24px;
+}
+
+.px-playground-stage--bare .px-playground-stage-body {
+  background: transparent;
+}
+
+.px-showcase-section-controls,
+.px-playground-controls {
+  grid-area: controls;
+  min-width: 0;
+  overflow: visible;
+}
+
+.px-showcase-section-controls-body,
+.px-playground-controls-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--px-space-4);
+}
+
+@media (max-width: 1080px) {
+  .px-showcase-section-grid,
+  .px-playground-playfield {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "result"
+      "controls";
+    gap: var(--px-space-4);
+  }
+
+  .px-showcase-section-target,
+  .px-showcase-section-controls,
+  .px-playground-stage,
+  .px-playground-controls {
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .px-playground {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "menu"
+      "content";
+  }
+
+  .px-playground-tabs {
+    position: static;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--px-space-1);
+  }
+
+  .px-playground-tabs .px-tab {
+    width: max-content;
+    flex: 0 0 auto;
+    text-align: center;
+  }
+
+  .px-playground-content {
+    overflow: visible;
+  }
+
+  .px-playground-playfield {
+    gap: var(--px-space-4);
+  }
+
+  .px-playground .px-fieldset {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: var(--px-space-4);
+  }
+
+  .px-playground-playfield > *,
+  .px-showcase-section-target > *,
+  .px-playground-stage > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .px-showcase-section-target,
+  .px-playground-stage {
+    min-height: 240px;
+  }
+
+  .px-showcase-section-target-body,
+  .px-playground-stage-body {
+    min-height: 240px;
+    padding: var(--px-space-4);
+  }
+
+  .px-showcase-section-target .px-chat,
+  .px-playground-stage .px-chat {
+    width: min(100%, 340px) !important;
+    max-width: 100%;
+  }
+}

@@ -31,6 +31,7 @@
   border-radius: var(--px-radius);
   box-shadow: inset 3px 3px 0 0 color-mix(in srgb, var(--px-shadow-color) 12%, transparent);
   transition: box-shadow var(--px-speed) var(--px-ease);
+  cursor: var(--px-cursor-text);
 }
 .px-input::placeholder,
 .px-textarea::placeholder {
@@ -92,7 +93,7 @@
   border-radius: var(--px-radius);
   box-shadow: var(--px-shadow-sm);
   appearance: none;
-  cursor: pointer;
+  cursor: var(--px-cursor-point);
 }
 .px-select::after {
   content: "▼";
@@ -107,6 +108,70 @@
 .px-select select:focus { outline: none; }
 .px-select select:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* ---- Select dropdown (options) ---------------------------------------------
+   Baseline: native pickers only honour bg/color/font on <option>, so give
+   them the theme's surface + ink everywhere. Browsers with customizable
+   selects (appearance: base-select) get the full puxel picker: hard border,
+   offset shadow, accent hover, blinking ▶ on the chosen option. */
+.px-select option {
+  font-family: var(--px-font-body);
+  font-weight: 600;
+  background: var(--px-surface);
+  color: var(--px-ink);
+}
+@supports (appearance: base-select) {
+  .px-select select,
+  .px-select select::picker(select) {
+    appearance: base-select;
+  }
+  /* base-select draws its own caret inside the button; keep the wrapper's ▼ */
+  .px-select select::picker-icon {
+    display: none;
+  }
+  .px-select select::picker(select) {
+    background: var(--px-surface);
+    border: var(--px-border-w) solid var(--px-border-color);
+    border-radius: var(--px-radius);
+    box-shadow: var(--px-shadow);
+    padding: var(--px-space-1);
+    margin-top: 4px;
+  }
+  .px-select option {
+    display: flex;
+    align-items: center;
+    gap: var(--px-space-2);
+    padding: 7px 10px;
+    font-size: 13px;
+    cursor: var(--px-cursor-point);
+  }
+  .px-select option:hover,
+  .px-select option:focus-visible {
+    outline: none;
+    background: var(--px-accent);
+    color: var(--px-accent-ink);
+  }
+  .px-select option:checked {
+    font-weight: 800;
+  }
+  .px-select option::checkmark {
+    content: "▶";
+    font-size: 9px;
+    color: var(--px-accent-2);
+    animation: px-blink 1.1s steps(2) infinite;
+  }
+  .px-select option:hover::checkmark,
+  .px-select option:focus-visible::checkmark {
+    color: var(--px-accent-ink);
+  }
+  /* flip the wrapper's arrow while the picker is open */
+  .px-select:has(select:open)::after {
+    content: "▲";
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .px-select option::checkmark { animation: none; }
+  }
+}
+
 /* ---- Checkbox ---------------------------------------------------------------- */
 .px-check,
 .px-radio,
@@ -114,7 +179,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--px-space-3);
-  cursor: pointer;
+  cursor: var(--px-cursor-point);
   font-size: 14px;
   font-weight: 600;
   user-select: none;
@@ -216,7 +281,7 @@
   width: 100%;
   height: 26px;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--px-cursor-point);
 }
 .px-slider::-webkit-slider-runnable-track {
   height: 12px;
@@ -267,7 +332,7 @@
   text-transform: uppercase;
   color: var(--px-ink);
   background: var(--px-surface);
-  border: var(--px-border-w-thin) solid var(--px-border-color);
+  border: var(--px-border-w) solid var(--px-border-color);
 }
 .px-fieldset-title--accent {
   background: var(--px-accent);
@@ -280,4 +345,211 @@
 .px-fieldset-title--right {
   left: auto;
   right: var(--px-space-4);
+}
+
+/* ==========================================================================
+   ARCADE VARIANT — "enter your initials" flavour for every form control.
+   Opt in per control (arcade prop → .px-*--arcade) or put .px-arcade on any
+   ancestor to flip a whole form at once. Selectors are paired accordingly.
+   ========================================================================== */
+
+.px-arcade .px-label {
+  font-family: var(--px-font-display);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* text entry: display font, block caret, blinking placeholder */
+.px-input--arcade,
+.px-arcade .px-input,
+.px-textarea--arcade,
+.px-arcade .px-textarea {
+  font-family: var(--px-font-display);
+  font-size: 11px;
+  line-height: 1.9;
+  text-transform: uppercase;
+  background: var(--px-surface-2);
+  box-shadow: none;
+  caret-color: var(--px-accent-2);
+  caret-shape: block;
+}
+.px-input--arcade::placeholder,
+.px-arcade .px-input::placeholder,
+.px-textarea--arcade::placeholder,
+.px-arcade .px-textarea::placeholder {
+  animation: px-blink 1.1s steps(2) infinite;
+}
+.px-input--arcade:focus::placeholder,
+.px-arcade .px-input:focus::placeholder,
+.px-textarea--arcade:focus::placeholder,
+.px-arcade .px-textarea:focus::placeholder {
+  opacity: 0;
+  animation: none;
+}
+.px-input--arcade:focus,
+.px-arcade .px-input:focus,
+.px-textarea--arcade:focus,
+.px-arcade .px-textarea:focus {
+  background: var(--px-surface);
+  border-color: var(--px-accent-2);
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-input--arcade::placeholder,
+  .px-arcade .px-input::placeholder,
+  .px-textarea--arcade::placeholder,
+  .px-arcade .px-textarea::placeholder {
+    animation: none;
+  }
+}
+
+/* select: display font on the closed control and (base-select) its options */
+.px-select--arcade select,
+.px-arcade .px-select select {
+  font-family: var(--px-font-display);
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.9;
+}
+@supports (appearance: base-select) {
+  .px-select--arcade option,
+  .px-arcade .px-select option {
+    font-family: var(--px-font-display);
+    font-size: 9px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  .px-select--arcade option:checked,
+  .px-arcade .px-select option:checked {
+    font-weight: 400;
+    color: var(--px-accent-2);
+  }
+  .px-select--arcade option:hover,
+  .px-arcade .px-select option:hover,
+  .px-select--arcade option:focus-visible,
+  .px-arcade .px-select option:focus-visible {
+    color: var(--px-accent-ink);
+  }
+}
+
+/* selection controls share the display-font label */
+.px-check--arcade,
+.px-arcade .px-check,
+.px-radio--arcade,
+.px-arcade .px-radio,
+.px-switch--arcade,
+.px-arcade .px-switch {
+  font-family: var(--px-font-display);
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* checkbox: lit "LED" square instead of a checkmark tick */
+.px-check--arcade .px-check-box,
+.px-arcade .px-check .px-check-box {
+  box-shadow: none;
+  background: var(--px-surface-2);
+}
+.px-check--arcade .px-check-box::after,
+.px-arcade .px-check .px-check-box::after {
+  width: 10px;
+  height: 10px;
+  clip-path: none;
+  background: var(--px-accent-2);
+}
+.px-check--arcade input:checked ~ .px-check-box,
+.px-arcade .px-check input:checked ~ .px-check-box {
+  background: var(--px-surface-2);
+}
+
+/* radio: the menu selector — a blinking ▶ in front of the chosen option */
+.px-radio--arcade .px-radio-dot,
+.px-arcade .px-radio .px-radio-dot {
+  width: 16px;
+  height: auto;
+  justify-content: flex-start;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+.px-radio--arcade .px-radio-dot::after,
+.px-arcade .px-radio .px-radio-dot::after {
+  content: "▶";
+  width: auto;
+  height: auto;
+  background: none;
+  color: var(--px-accent-2);
+  font-size: 12px;
+  line-height: 1;
+  transform: none;
+  opacity: 0;
+  transition: opacity var(--px-speed) var(--px-ease);
+}
+.px-radio--arcade input:checked ~ .px-radio-dot::after,
+.px-arcade .px-radio input:checked ~ .px-radio-dot::after {
+  opacity: 1;
+  animation: px-blink 1.1s steps(2) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-radio--arcade input:checked ~ .px-radio-dot::after,
+  .px-arcade .px-radio input:checked ~ .px-radio-dot::after {
+    animation: none;
+  }
+}
+
+/* switch: wider track with an ON/OFF readout */
+.px-switch--arcade .px-switch-track,
+.px-arcade .px-switch .px-switch-track {
+  width: 64px;
+}
+.px-switch--arcade .px-switch-track::before,
+.px-arcade .px-switch .px-switch-track::before {
+  content: "OFF";
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+  font-family: var(--px-font-display);
+  font-size: 7px;
+  color: var(--px-ink-muted);
+}
+.px-switch--arcade input:checked ~ .px-switch-track::before,
+.px-arcade .px-switch input:checked ~ .px-switch-track::before {
+  content: "ON";
+  right: auto;
+  left: 6px;
+  color: var(--px-success-ink);
+}
+.px-switch--arcade input:checked ~ .px-switch-track::after,
+.px-arcade .px-switch input:checked ~ .px-switch-track::after {
+  transform: translateX(38px);
+}
+
+/* slider: secondary-accent thumb over a notched track */
+.px-slider--arcade::-webkit-slider-runnable-track,
+.px-arcade .px-slider::-webkit-slider-runnable-track {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--px-surface-2) 0 10px,
+    var(--px-surface) 10px 12px
+  );
+}
+.px-slider--arcade::-webkit-slider-thumb,
+.px-arcade .px-slider::-webkit-slider-thumb {
+  background: var(--px-accent-2);
+}
+.px-slider--arcade::-moz-range-track,
+.px-arcade .px-slider::-moz-range-track {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--px-surface-2) 0 10px,
+    var(--px-surface) 10px 12px
+  );
+}
+.px-slider--arcade::-moz-range-thumb,
+.px-arcade .px-slider::-moz-range-thumb {
+  background: var(--px-accent-2);
 }

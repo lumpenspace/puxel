@@ -1,0 +1,212 @@
+/* App-only styles for the component documentation page. Not part of the
+   shipped puxel.css (see scripts/build-css.mjs) — this is showcase chrome,
+   not a design-system primitive. */
+
+.px-docs {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--px-space-6);
+}
+
+.px-docs-sidebar {
+  flex: 0 0 240px;
+  position: sticky;
+  top: var(--px-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--px-space-5);
+  max-height: calc(100vh - var(--px-space-7));
+  overflow-y: auto;
+}
+
+.px-docs-group-title {
+  font-family: var(--px-font-display);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--px-ink-muted);
+  margin: 0 0 var(--px-space-2);
+}
+
+.px-docs-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.px-docs-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: var(--px-space-2) var(--px-space-3);
+  border: var(--px-border-w-thin) solid transparent;
+  background: none;
+  border-radius: var(--px-radius);
+  cursor: var(--px-cursor-point, pointer);
+  font-size: 14px;
+  color: var(--px-ink);
+}
+
+.px-docs-item:hover {
+  background: var(--px-surface-2);
+}
+
+.px-docs-item--active {
+  background: var(--px-accent);
+  color: var(--px-accent-ink);
+  border-color: var(--px-border-color);
+  font-weight: 700;
+}
+
+.px-docs-empty {
+  color: var(--px-ink-muted);
+  font-size: 13px;
+}
+
+.px-docs-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--px-space-5);
+}
+
+.px-docs-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--px-space-3);
+  flex-wrap: wrap;
+}
+
+.px-docs-summary {
+  color: var(--px-ink-muted);
+  max-width: 60ch;
+}
+
+.px-docs-section-title {
+  font-family: var(--px-font-display);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--px-space-3);
+}
+
+.px-docs-example {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--px-space-6);
+  min-height: 120px;
+  background: repeating-conic-gradient(var(--px-surface-2) 0% 25%, var(--px-surface) 0% 50%) 50% / 24px 24px;
+  border: var(--px-border-w) solid var(--px-border-color);
+}
+
+/* the example already renders its own full border/background frame — the
+   checkered backdrop would just double it up, so drop it. */
+.px-docs-example--bare {
+  background: none;
+  border: none;
+}
+
+.px-docs-code {
+  --px-docs-code-bg: color-mix(in srgb, var(--px-surface) 72%, var(--px-bg));
+  --px-docs-code-text: var(--px-ink);
+  --px-docs-code-comment: var(--px-ink-muted);
+  --px-docs-code-keyword: color-mix(in srgb, var(--px-accent-2) 76%, var(--px-ink));
+  --px-docs-code-tag: color-mix(in srgb, var(--px-info) 82%, var(--px-ink));
+  --px-docs-code-attr: color-mix(in srgb, var(--px-danger) 78%, var(--px-ink));
+  --px-docs-code-string: color-mix(in srgb, var(--px-success) 76%, var(--px-ink));
+  --px-docs-code-number: color-mix(in srgb, var(--px-warning) 72%, var(--px-ink));
+  --px-docs-code-operator: var(--px-ink-muted);
+  margin: 0;
+  padding: var(--px-space-4);
+  overflow-x: auto;
+  background: var(--px-docs-code-bg);
+  color: var(--px-docs-code-text);
+  border: var(--px-border-w) solid var(--px-border-color);
+  font-family: var(--px-font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  tab-size: 2;
+}
+
+.px-docs-code code {
+  display: block;
+  min-width: max-content;
+}
+
+.px-docs-token {
+  font-weight: 700;
+}
+
+.px-docs-token--comment {
+  color: var(--px-docs-code-comment);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.px-docs-token--keyword {
+  color: var(--px-docs-code-keyword);
+}
+
+.px-docs-token--tag,
+.px-docs-token--component {
+  color: var(--px-docs-code-tag);
+}
+
+.px-docs-token--attr {
+  color: var(--px-docs-code-attr);
+}
+
+.px-docs-token--string {
+  color: var(--px-docs-code-string);
+}
+
+.px-docs-token--number {
+  color: var(--px-docs-code-number);
+}
+
+.px-docs-token--operator,
+.px-docs-token--punctuation {
+  color: var(--px-docs-code-operator);
+  font-weight: 400;
+}
+
+[data-theme="terminal"] .px-docs-code {
+  --px-docs-code-bg: #020602;
+  --px-docs-code-keyword: var(--px-accent-2);
+  --px-docs-code-tag: var(--px-info);
+  --px-docs-code-attr: var(--px-warning);
+  --px-docs-code-string: var(--px-success);
+}
+
+.px-docs-props-note {
+  color: var(--px-ink-muted);
+  font-size: 12px;
+  margin: var(--px-space-2) 0 0;
+}
+
+.px-docs-props-group + .px-docs-props-group {
+  margin-top: var(--px-space-4);
+}
+
+.px-docs-props-group-title {
+  font-family: var(--px-font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 var(--px-space-2);
+}
+
+@media (max-width: 720px) {
+  .px-docs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .px-docs-sidebar {
+    position: static;
+    max-height: none;
+    flex: 1 1 auto;
+    width: 100%;
+  }
+  .px-docs-main {
+    width: 100%;
+  }
+}

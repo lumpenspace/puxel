@@ -4,6 +4,12 @@ A brutalist-retro UI kit for React — hard offset shadows, thick borders and pi
 accents on top of fully modern components (keyboard navigation, ARIA, reduced-motion
 support, native `<dialog>`).
 
+**Live demo and docs:** <https://lumpenspace.github.io/puxel/>
+
+![Puxel home screen](public/screenshots/puxel-home.png)
+
+![Puxel video player docs](public/screenshots/puxel-docs-video.png)
+
 ## Design
 
 The styling is **CSS-first**: everything lives in plain CSS under `src/styles/`
@@ -25,14 +31,27 @@ Set `data-theme` on any ancestor (usually `<html>`), or use `ThemeProvider` /
 
 ### Components
 
-Buttons, badges, avatars, spinner · inputs, textarea, select, checkbox, radio,
-switch, slider, field, fieldset (title-on-border) · card, alert, toast, tabs,
-accordion, table, dialog, dropdown menu, tooltip, breadcrumb, pagination ·
-progress, segmented health/MP/XP bars, arcade score, stat, splash screen ·
-kbd, separator.
+Buttons, badges, highlights, icons, avatars, animated sprite avatars, spinner ·
+inputs, textarea, select, checkbox, radio, switch, slider, field, fieldset
+(title-on-border), arcade/high-score form styling · card, character card,
+popover, chat, alert, toast, tabs, accordion, table, dialog, dropdown menu,
+tooltip, breadcrumb, pagination · progress, segmented health/MP/XP bars, turn
+dial, RPG card, player profile, area map, arcade score, stat, splash screen ·
+figure, video player, gradient background, pixel shader · kbd, separator.
 
 Opt-in flourishes: `.px-pixelated` (stepped 8-bit corners), `.px-crt` (scanline
 overlay), `pixel` prop (Press Start 2P font).
+
+## App
+
+The Vite showcase has three first-class surfaces:
+
+- **Home** — composed component showcase with themes, HUD pieces, chat, sprites,
+  icons, forms, containers, and media.
+- **Playground** — interactive controls for component states. The Media tab uses
+  `public/jingle.mov` in the `VideoPlayer` demo.
+- **Docs** — searchable in-app component docs, examples, usage snippets, and prop
+  tables generated from the React components.
 
 ## Develop
 
@@ -40,16 +59,26 @@ overlay), `pixel` prop (Press Start 2P font).
 npm install
 npm run dev     # showcase app with theme switcher
 npm run build
+npm run build:lib
+npm run docs:props
+npm run previews
 ```
+
+`npm run build` writes the GitHub Pages/showcase app to `dist/app/`.
+`npm run build:lib` writes the package build and declarations under `dist/`.
+Re-run `npm run docs:props` whenever component props change.
 
 ## Use in your app
 
 ```tsx
-import "puxel/src/styles/puxel.css";
-import { ThemeProvider, Button, HealthBar } from "puxel/src/components";
+import "puxel/styles.css";
+import { ThemeProvider, Button, HealthBar } from "puxel";
 
 <ThemeProvider defaultTheme="arcade">
   <Button variant="primary" pixel>Insert coin</Button>
   <HealthBar kind="hp" value={7} max={10} />
 </ThemeProvider>
 ```
+
+The package is still marked private, so treat the GitHub release as the source
+artifact until an npm publish flow is added.

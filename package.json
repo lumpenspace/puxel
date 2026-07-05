@@ -3,6 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "A brutalist-retro React UI kit with pixel accents and accessible modern components.",
+  "homepage": "https://lumpenspace.github.io/puxel/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lumpenspace/puxel.git"
+  },
   "main": "./dist/puxel.js",
   "module": "./dist/puxel.js",
   "types": "./dist/types/components/index.d.ts",
@@ -11,7 +17,8 @@
       "types": "./dist/types/components/index.d.ts",
       "import": "./dist/puxel.js"
     },
-    "./styles.css": "./src/styles/puxel.css"
+    "./styles.css": "./src/styles/puxel.css",
+    "./puxel.css": "./dist/puxel.css"
   },
   "scripts": {
     "dev": "vite",
@@ -19,7 +26,8 @@
     "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && node scripts/build-css.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
-    "previews": "node scripts/build-previews.mjs"
+    "previews": "node scripts/build-previews.mjs",
+    "docs:props": "node scripts/build-component-docs.mjs"
   },
   "peerDependencies": {
     "react": "^19",
@@ -30,12 +38,14 @@
     "react-dom": "^19"
   },
   "devDependencies": {
+    "@hackernoon/pixel-icon-library": "^1.1.0",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "esbuild": "^0.28.1",
     "oxlint": "^1.71.0",
+    "react-docgen-typescript": "^2.4.0",
     "typescript": "~6.0.2",
     "vite": "^8.1.1"
   }

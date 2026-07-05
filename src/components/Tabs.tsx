@@ -60,10 +60,13 @@ export function Tabs({
 
 export function TabsList({ className, children, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const listRef = useRef<HTMLDivElement>(null);
+  const isVertical = rest["aria-orientation"] === "vertical";
 
   // roving focus with arrow keys
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+    const previousKey = isVertical ? "ArrowUp" : "ArrowLeft";
+    const nextKey = isVertical ? "ArrowDown" : "ArrowRight";
+    if (![previousKey, nextKey, "Home", "End"].includes(e.key)) return;
     const tabs = Array.from(
       listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]:not(:disabled)') ?? [],
     );
@@ -71,8 +74,8 @@ export function TabsList({ className, children, ...rest }: HTMLAttributes<HTMLDi
     if (current === -1) return;
     e.preventDefault();
     let next = current;
-    if (e.key === "ArrowLeft") next = (current - 1 + tabs.length) % tabs.length;
-    if (e.key === "ArrowRight") next = (current + 1) % tabs.length;
+    if (e.key === previousKey) next = (current - 1 + tabs.length) % tabs.length;
+    if (e.key === nextKey) next = (current + 1) % tabs.length;
     if (e.key === "Home") next = 0;
     if (e.key === "End") next = tabs.length - 1;
     tabs[next]?.focus();

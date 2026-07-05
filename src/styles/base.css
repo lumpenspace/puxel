@@ -20,7 +20,7 @@ body {
 
 ::selection {
   background: var(--px-selection);
-  color: var(--px-ink);
+  color: var(--px-selection-ink);
 }
 
 /* Every interactive element gets the same loud focus ring */
@@ -37,7 +37,8 @@ body {
 .px-accordion-trigger:focus-visible,
 .px-pagination-btn:focus-visible,
 .px-menu-trigger:focus-visible,
-.px-menu-item:focus-visible {
+.px-menu-item:focus-visible,
+.px-themeswitcher-option:focus-visible {
   outline: var(--px-border-w) solid var(--px-accent-2);
   outline-offset: 2px;
 }
@@ -83,15 +84,16 @@ body {
 
 /* ---- pixel corners (opt-in) -------------------------------------------
    Stepped clip-path corners: the "8-bit" silhouette without going full NES.
-   Works on solid-bg elements; borders are clipped so it pairs best with
-   .px-btn--primary / badges / solid chips. */
+   The step (--px-pixel-notch) is 1px wider than --px-border-w on purpose —
+   at a tight step-to-border ratio the border's corner pixel gets clipped
+   away along with the notch, reading as a broken/missing border. box-shadow
+   is clipped away entirely by clip-path (its offset region falls outside
+   the element's own polygon), so pixelated elements use the --px-pixel-shadow-*
+   filter equivalents instead — see controls.css / containers.css.
+   Works on solid-bg elements: buttons, cards, figure frames, badges, chips. */
 .px-pixelated {
-  clip-path: polygon(
-    0 6px, 3px 6px, 3px 3px, 6px 3px, 6px 0,
-    calc(100% - 6px) 0, calc(100% - 6px) 3px, calc(100% - 3px) 3px, calc(100% - 3px) 6px, 100% 6px,
-    100% calc(100% - 6px), calc(100% - 3px) calc(100% - 6px), calc(100% - 3px) calc(100% - 3px), calc(100% - 6px) calc(100% - 3px), calc(100% - 6px) 100%,
-    6px 100%, 6px calc(100% - 3px), 3px calc(100% - 3px), 3px calc(100% - 6px), 0 calc(100% - 6px)
-  );
+  box-shadow: none;
+  clip-path: var(--px-pixel-clip);
 }
 
 /* ---- CRT overlay (opt-in, pairs with the terminal theme) --------------- */

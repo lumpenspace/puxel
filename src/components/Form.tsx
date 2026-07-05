@@ -49,29 +49,42 @@ export function Label({ className, ...rest }: LabelHTMLAttributes<HTMLLabelEleme
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
+  /** High-score-entry styling: display font, block caret, blinking placeholder. */
+  arcade?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { error, className, ...rest },
+  { error, arcade, className, ...rest },
   ref,
 ) {
   return (
-    <input ref={ref} className={cn("px-input", error && "px-input--error", className)} {...rest} />
+    <input
+      ref={ref}
+      className={cn("px-input", error && "px-input--error", arcade && "px-input--arcade", className)}
+      {...rest}
+    />
   );
 });
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean;
+  /** High-score-entry styling: display font, block caret, blinking placeholder. */
+  arcade?: boolean;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { error, className, ...rest },
+  { error, arcade, className, ...rest },
   ref,
 ) {
   return (
     <textarea
       ref={ref}
-      className={cn("px-textarea", error && "px-textarea--error", className)}
+      className={cn(
+        "px-textarea",
+        error && "px-textarea--error",
+        arcade && "px-textarea--arcade",
+        className,
+      )}
       {...rest}
     />
   );
@@ -87,10 +100,15 @@ export function InputAddon({ children }: { children: ReactNode }) {
 
 /* ---- Select ---- */
 
-export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSelectElement>>(
-  function Select({ className, children, ...rest }, ref) {
+export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  /** Display-font control + options (options styling needs base-select support). */
+  arcade?: boolean;
+}
+
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(
+  function Select({ arcade, className, children, ...rest }, ref) {
     return (
-      <span className={cn("px-select", className)}>
+      <span className={cn("px-select", arcade && "px-select--arcade", className)}>
         <select ref={ref} {...rest}>
           {children}
         </select>
@@ -103,14 +121,16 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: ReactNode;
+  /** Display-font label + lit "LED" square instead of a tick. */
+  arcade?: boolean;
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { label, className, ...rest },
+  { label, arcade, className, ...rest },
   ref,
 ) {
   return (
-    <label className={cn("px-check", className)}>
+    <label className={cn("px-check", arcade && "px-check--arcade", className)}>
       <input ref={ref} type="checkbox" {...rest} />
       <span className="px-check-box" aria-hidden="true" />
       {label && <span>{label}</span>}
@@ -120,14 +140,16 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: ReactNode;
+  /** Menu-selector styling: a blinking ▶ marks the chosen option. */
+  arcade?: boolean;
 }
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
-  { label, className, ...rest },
+  { label, arcade, className, ...rest },
   ref,
 ) {
   return (
-    <label className={cn("px-radio", className)}>
+    <label className={cn("px-radio", arcade && "px-radio--arcade", className)}>
       <input ref={ref} type="radio" {...rest} />
       <span className="px-radio-dot" aria-hidden="true" />
       {label && <span>{label}</span>}
@@ -137,14 +159,16 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
 
 export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "role"> {
   label?: ReactNode;
+  /** Wider track with an ON/OFF readout. */
+  arcade?: boolean;
 }
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
-  { label, className, ...rest },
+  { label, arcade, className, ...rest },
   ref,
 ) {
   return (
-    <label className={cn("px-switch", className)}>
+    <label className={cn("px-switch", arcade && "px-switch--arcade", className)}>
       <input ref={ref} type="checkbox" role="switch" {...rest} />
       <span className="px-switch-track" aria-hidden="true" />
       {label && <span>{label}</span>}
@@ -154,9 +178,21 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
 
 /* ---- Slider ---- */
 
-export const Slider = forwardRef<HTMLInputElement, Omit<InputHTMLAttributes<HTMLInputElement>, "type">>(
-  function Slider({ className, ...rest }, ref) {
-    return <input ref={ref} type="range" className={cn("px-slider", className)} {...rest} />;
+export interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+  /** Secondary-accent thumb over a notched track. */
+  arcade?: boolean;
+}
+
+export const Slider = forwardRef<HTMLInputElement, SliderProps>(
+  function Slider({ arcade, className, ...rest }, ref) {
+    return (
+      <input
+        ref={ref}
+        type="range"
+        className={cn("px-slider", arcade && "px-slider--arcade", className)}
+        {...rest}
+      />
+    );
   },
 );
 

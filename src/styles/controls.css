@@ -4,6 +4,9 @@
 
 /* ---- Button ------------------------------------------------------------ */
 .px-btn {
+  --px-btn-bg: var(--px-surface);
+  --px-btn-fg: var(--px-ink);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -15,16 +18,17 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--px-ink);
-  background: var(--px-surface);
+  color: var(--px-btn-fg);
+  background: var(--px-btn-bg);
   border: var(--px-border-w) solid var(--px-border-color);
   border-radius: var(--px-radius);
   box-shadow: var(--px-shadow);
-  cursor: pointer;
+  cursor: var(--px-cursor-point);
   user-select: none;
   transition:
     transform var(--px-speed) var(--px-ease),
     box-shadow var(--px-speed) var(--px-ease),
+    filter var(--px-speed) var(--px-ease),
     background var(--px-speed) var(--px-ease);
 }
 .px-btn:hover {
@@ -42,11 +46,45 @@
   box-shadow: var(--px-shadow);
 }
 
-.px-btn--primary { background: var(--px-accent); color: var(--px-accent-ink); }
-.px-btn--secondary { background: var(--px-ink); color: var(--px-bg); }
-.px-btn--danger { background: var(--px-danger); color: var(--px-danger-ink); }
-.px-btn--success { background: var(--px-success); color: var(--px-success-ink); }
+/* box-shadow's offset region falls outside a clip-path'd element's own
+   polygon, so it's simply never painted — pixelated buttons swap to the
+   filter equivalent, which isn't subject to the clip. */
+.px-btn.px-pixelated {
+  position: relative;
+  isolation: isolate;
+  border: none;
+  border-radius: 0;
+  background: var(--px-border-color);
+  box-shadow: none;
+  filter: var(--px-pixel-shadow);
+}
+.px-btn.px-pixelated::before {
+  content: "";
+  position: absolute;
+  inset: var(--px-border-w);
+  z-index: -1;
+  background: var(--px-btn-bg);
+  clip-path: var(--px-pixel-clip);
+  pointer-events: none;
+}
+.px-btn.px-pixelated:hover {
+  box-shadow: none;
+  filter: drop-shadow(calc(var(--px-shadow-x) + 2px) calc(var(--px-shadow-y) + 2px) 0 var(--px-shadow-color));
+}
+.px-btn.px-pixelated:active {
+  box-shadow: none;
+  filter: none;
+}
+.px-btn--ghost.px-pixelated {
+  filter: none;
+}
+
+.px-btn--primary { --px-btn-bg: var(--px-accent); --px-btn-fg: var(--px-accent-ink); }
+.px-btn--secondary { --px-btn-bg: var(--px-ink); --px-btn-fg: var(--px-bg); }
+.px-btn--danger { --px-btn-bg: var(--px-danger); --px-btn-fg: var(--px-danger-ink); }
+.px-btn--success { --px-btn-bg: var(--px-success); --px-btn-fg: var(--px-success-ink); }
 .px-btn--ghost {
+  --px-btn-bg: transparent;
   background: transparent;
   border-color: transparent;
   box-shadow: none;
@@ -61,15 +99,61 @@
 
 .px-btn--sm { padding: 6px 12px; font-size: 12px; }
 .px-btn--lg { padding: 14px 26px; font-size: 16px; }
-.px-btn--icon { padding: 10px; }
-.px-btn--icon.px-btn--sm { padding: 6px; }
-.px-btn--icon.px-btn--lg { padding: 14px; }
+.px-btn--icon {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  padding: 0;
+  font-size: 24px;
+  line-height: 1;
+}
+.px-btn--icon.px-btn--sm {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 20px;
+}
+.px-btn--icon.px-btn--lg {
+  width: 58px;
+  min-width: 58px;
+  height: 58px;
+  padding: 0;
+  font-size: 30px;
+}
+.px-btn--icon .px-icon {
+  font-size: 1.22em;
+}
+.px-btn.px-pixelated { padding: calc(10px + var(--px-border-w)) calc(18px + var(--px-border-w)); }
+.px-btn--sm.px-pixelated { padding: calc(6px + var(--px-border-w)) calc(12px + var(--px-border-w)); }
+.px-btn--lg.px-pixelated { padding: calc(14px + var(--px-border-w)) calc(26px + var(--px-border-w)); }
+.px-btn--icon.px-pixelated {
+  width: calc(48px + var(--px-border-w) * 2);
+  min-width: calc(48px + var(--px-border-w) * 2);
+  height: calc(48px + var(--px-border-w) * 2);
+  padding: 0;
+}
+.px-btn--icon.px-btn--sm.px-pixelated {
+  width: calc(40px + var(--px-border-w) * 2);
+  min-width: calc(40px + var(--px-border-w) * 2);
+  height: calc(40px + var(--px-border-w) * 2);
+  padding: 0;
+}
+.px-btn--icon.px-btn--lg.px-pixelated {
+  width: calc(58px + var(--px-border-w) * 2);
+  min-width: calc(58px + var(--px-border-w) * 2);
+  height: calc(58px + var(--px-border-w) * 2);
+  padding: 0;
+}
 
 /* pixel-display variant: the loud one */
 .px-btn--pixel {
   font-family: var(--px-font-display);
   font-size: 11px;
   padding: 12px 18px;
+}
+.px-btn--pixel.px-pixelated {
+  padding: calc(12px + var(--px-border-w)) calc(18px + var(--px-border-w));
 }
 
 /* ---- Badge -------------------------------------------------------------- */
@@ -96,6 +180,44 @@
 .px-badge--info { background: var(--px-info); color: var(--px-info-ink); }
 .px-badge--outline { background: transparent; }
 .px-badge--pixel { font-family: var(--px-font-display); font-size: 8px; padding: 5px 10px; }
+
+/* ---- Highlight ----------------------------------------------------------- */
+.px-highlight {
+  --px-highlight-bg: var(--px-accent);
+  --px-highlight-ink: var(--px-accent-ink);
+  --px-highlight-border: var(--px-border-color);
+  position: relative;
+  display: inline;
+  padding: 0.06em 0.28em 0.12em;
+  font-family: inherit;
+  font-weight: 900;
+  line-height: inherit;
+  color: var(--px-highlight-ink);
+  background: var(--px-highlight-bg);
+  border: var(--px-border-w-thin) solid var(--px-highlight-border);
+  border-radius: var(--px-radius);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.px-highlight--raised {
+  box-shadow: 2px 2px 0 0 var(--px-shadow-color);
+}
+.px-highlight--info {
+  --px-highlight-bg: var(--px-info);
+  --px-highlight-ink: var(--px-info-ink);
+}
+.px-highlight--success {
+  --px-highlight-bg: var(--px-success);
+  --px-highlight-ink: var(--px-success-ink);
+}
+.px-highlight--warning {
+  --px-highlight-bg: var(--px-warning);
+  --px-highlight-ink: var(--px-warning-ink);
+}
+.px-highlight--danger {
+  --px-highlight-bg: var(--px-danger);
+  --px-highlight-ink: var(--px-danger-ink);
+}
 
 /* ---- Avatar -------------------------------------------------------------- */
 .px-avatar {
@@ -141,6 +263,16 @@
 }
 .px-avatar-group .px-avatar { box-shadow: none; }
 .px-avatar-group .px-avatar + .px-avatar { margin-left: -10px; }
+/* earlier avatars stack above later ones, so an overlapped status dot
+   never gets buried under the next avatar in the row */
+.px-avatar-group .px-avatar:nth-child(1) { z-index: 8; }
+.px-avatar-group .px-avatar:nth-child(2) { z-index: 7; }
+.px-avatar-group .px-avatar:nth-child(3) { z-index: 6; }
+.px-avatar-group .px-avatar:nth-child(4) { z-index: 5; }
+.px-avatar-group .px-avatar:nth-child(5) { z-index: 4; }
+.px-avatar-group .px-avatar:nth-child(6) { z-index: 3; }
+.px-avatar-group .px-avatar:nth-child(7) { z-index: 2; }
+.px-avatar-group .px-avatar:nth-child(8) { z-index: 1; }
 
 /* ---- Spinner (blocky, steps through quadrants) --------------------------- */
 .px-spinner {
@@ -163,4 +295,73 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .px-spinner { animation-duration: 2.5s; }
+}
+
+/* ---- Icon (inline pixel glyph, tints with currentColor) ------------------- */
+.px-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+.px-icon svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
+.px-icon svg path,
+.px-icon svg polygon {
+  fill: currentColor;
+}
+
+/* ---- Sprite avatar (animated sprite-sheet character) ----------------------
+   A single cell of a sheet is stepped across the grid by shifting a background.
+   In "full" mode the figure perches on the box's lower border (butt on the
+   edge, legs dangling, head cresting above — overflow visible); in "face" mode
+   the box clips to a static head crop. All placement is driven by the
+   --px-sprite-* vars, which a consumer overrides per sheet (the cells of a
+   given sheet are rarely square, so the frame keeps the real cell aspect
+   ratio rather than squishing to the box). */
+.px-sprite {
+  position: relative;
+  width: var(--px-sprite-size, 54px);
+  height: var(--px-sprite-size, 54px);
+  flex-shrink: 0;
+  border: var(--px-border-w) solid var(--px-border-color);
+  background: var(--px-surface-2);
+  box-shadow: var(--px-shadow-sm);
+  /* cell geometry + placement knobs (defaults suit a 192×208 cell sheet) */
+  --px-sprite-cell-ar: 192 / 208;
+  --px-sprite-cell-tall: 1.0833; /* cell height ÷ box width (208/192) */
+  --px-sprite-seat: 0.63; /* butt line as a fraction of cell height */
+  --px-sprite-scale: 1.6; /* character size relative to the box */
+  --px-sprite-baseline: 0px; /* fine nudge of the seat line: +down / −up */
+  --px-sprite-face-zoom: 2.5; /* head-crop zoom for face mode */
+  --px-sprite-face-y: 20%; /* vertical focus point of the face crop */
+  --px-sprite-flipx: 1; /* set to -1 to mirror (face the other way) */
+}
+.px-sprite--bare {
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+.px-sprite-frame {
+  position: absolute;
+  left: 50%;
+  width: 100%;
+  aspect-ratio: var(--px-sprite-cell-ar);
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+.px-sprite--full { overflow: visible; }
+.px-sprite--full .px-sprite-frame {
+  top: calc((1 - var(--px-sprite-cell-tall) * var(--px-sprite-seat)) * 100% + var(--px-sprite-baseline));
+  transform-origin: center calc(var(--px-sprite-seat) * 100%);
+  transform: translateX(-50%) scale(calc(var(--px-sprite-scale) * var(--px-sprite-flipx)), var(--px-sprite-scale));
+}
+.px-sprite--face { overflow: hidden; }
+.px-sprite--face .px-sprite-frame {
+  top: 0;
+  transform-origin: center var(--px-sprite-face-y);
+  transform: translateX(-50%) scale(calc(var(--px-sprite-face-zoom) * var(--px-sprite-flipx)), var(--px-sprite-face-zoom));
 }

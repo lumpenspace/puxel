@@ -1,17 +1,50 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "../lib/cn";
 
+export type CardTone = "default" | "accent" | "danger" | "info" | "success" | "warning";
+
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   /** No drop shadow. */
   flat?: boolean;
   /** Lift on hover — for clickable cards. */
   hoverable?: boolean;
+  /** Semantic frame/fill wash. */
+  tone?: CardTone;
+  /** Tighter header/body/footer padding. */
+  compact?: boolean;
+  /** Square tile for icons, inventory items, sprites, or small media. */
+  tile?: boolean;
+  /** Stepped 8-bit corner silhouette (clips the card and its content). */
+  pixelated?: boolean;
+  /** Pixel-rounded frame painted behind the content: children aren't clipped
+      and every outer pixel reads as the border colour. */
+  round?: boolean;
 }
 
-export function Card({ flat, hoverable, className, ...rest }: CardProps) {
+export function Card({
+  flat,
+  hoverable,
+  tone = "default",
+  compact,
+  tile,
+  pixelated,
+  round,
+  className,
+  ...rest
+}: CardProps) {
   return (
     <div
-      className={cn("px-card", flat && "px-card--flat", hoverable && "px-card--hover", className)}
+      className={cn(
+        "px-card",
+        flat && "px-card--flat",
+        hoverable && "px-card--hover",
+        tone !== "default" && `px-card--${tone}`,
+        compact && "px-card--compact",
+        tile && "px-card--tile",
+        pixelated && "px-pixelated",
+        round && "px-card--round",
+        className,
+      )}
       {...rest}
     />
   );

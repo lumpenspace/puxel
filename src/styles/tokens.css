@@ -35,9 +35,72 @@
   --px-shadow: var(--px-shadow-x) var(--px-shadow-y) 0 0 var(--px-shadow-color);
   --px-shadow-sm: 2px 2px 0 0 var(--px-shadow-color);
   --px-shadow-lg: 8px 8px 0 0 var(--px-shadow-color);
+  --px-text-shadow-color: var(--px-accent);
+
+  /* Stepped-corner ("pixelated") geometry. Step must clear --px-border-w so
+     the border's corner nub survives the clip instead of getting shaved to
+     nothing; shadows on pixelated elements use the filter equivalents below
+     since clip-path would otherwise cut them off entirely. */
+  --px-pixel-notch: 4px;
+  --px-pixel-shadow: drop-shadow(var(--px-shadow-x) var(--px-shadow-y) 0 var(--px-shadow-color));
+  --px-pixel-shadow-sm: drop-shadow(2px 2px 0 var(--px-shadow-color));
+  --px-pixel-shadow-lg: drop-shadow(8px 8px 0 var(--px-shadow-color));
+  /* The stepped-corner silhouette as a reusable clip. Shared by .px-pixelated
+     and the ::before frame of .px-card--round so both read the same geometry
+     off --px-pixel-notch. */
+  --px-pixel-clip: polygon(
+    0 calc(var(--px-pixel-notch) * 2),
+    var(--px-pixel-notch) calc(var(--px-pixel-notch) * 2),
+    var(--px-pixel-notch) var(--px-pixel-notch),
+    calc(var(--px-pixel-notch) * 2) var(--px-pixel-notch),
+    calc(var(--px-pixel-notch) * 2) 0,
+    calc(100% - var(--px-pixel-notch) * 2) 0,
+    calc(100% - var(--px-pixel-notch) * 2) var(--px-pixel-notch),
+    calc(100% - var(--px-pixel-notch)) var(--px-pixel-notch),
+    calc(100% - var(--px-pixel-notch)) calc(var(--px-pixel-notch) * 2),
+    100% calc(var(--px-pixel-notch) * 2),
+    100% calc(100% - var(--px-pixel-notch) * 2),
+    calc(100% - var(--px-pixel-notch)) calc(100% - var(--px-pixel-notch) * 2),
+    calc(100% - var(--px-pixel-notch)) calc(100% - var(--px-pixel-notch)),
+    calc(100% - var(--px-pixel-notch) * 2) calc(100% - var(--px-pixel-notch)),
+    calc(100% - var(--px-pixel-notch) * 2) 100%,
+    calc(var(--px-pixel-notch) * 2) 100%,
+    calc(var(--px-pixel-notch) * 2) calc(100% - var(--px-pixel-notch)),
+    var(--px-pixel-notch) calc(100% - var(--px-pixel-notch)),
+    var(--px-pixel-notch) calc(100% - var(--px-pixel-notch) * 2),
+    0 calc(100% - var(--px-pixel-notch) * 2)
+  );
 
   --px-speed: 120ms;
   --px-ease: cubic-bezier(0.2, 0.8, 0.4, 1);
+
+  /* Pixel-art cursors (white glyph + black outline, so they read on every
+     theme). Each var holds the full cursor value incl. the keyword fallback —
+     override with a plain keyword to opt out (--px-cursor-point: pointer).
+     Safari ignores SVG cursors and falls through to the keyword. */
+  --px-cursor-point: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 18 18' shape-rendering='crispEdges'><path fill='%23000' d='M6 0h4v1h-4zM6 1h1v1h-1zM9 1h1v1h-1zM6 2h1v1h-1zM9 2h1v1h-1zM6 3h1v1h-1zM9 3h1v1h-1zM6 4h1v1h-1zM9 4h1v1h-1zM6 5h1v1h-1zM9 5h4v1h-4zM6 6h1v1h-1zM9 6h1v1h-1zM12 6h4v1h-4zM1 7h6v1h-6zM9 7h1v1h-1zM12 7h1v1h-1zM15 7h1v1h-1zM1 8h1v1h-1zM5 8h2v1h-2zM9 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM1 9h1v1h-1zM5 9h2v1h-2zM9 9h1v1h-1zM12 9h1v1h-1zM15 9h1v1h-1zM1 10h1v1h-1zM6 10h1v1h-1zM15 10h1v1h-1zM1 11h2v1h-2zM6 11h1v1h-1zM15 11h1v1h-1zM2 12h1v1h-1zM15 12h1v1h-1zM2 13h2v1h-2zM15 13h1v1h-1zM3 14h1v1h-1zM14 14h2v1h-2zM3 15h2v1h-2zM14 15h1v1h-1zM4 16h1v1h-1zM14 16h1v1h-1zM4 17h11v1h-11z'/><path fill='%23fff' d='M7 1h2v1h-2zM7 2h2v1h-2zM7 3h2v1h-2zM7 4h2v1h-2zM7 5h2v1h-2zM7 6h2v1h-2zM10 6h2v1h-2zM7 7h2v1h-2zM10 7h2v1h-2zM13 7h2v1h-2zM2 8h3v1h-3zM7 8h2v1h-2zM10 8h2v1h-2zM13 8h2v1h-2zM2 9h3v1h-3zM7 9h2v1h-2zM10 9h2v1h-2zM13 9h2v1h-2zM2 10h4v1h-4zM7 10h8v1h-8zM3 11h3v1h-3zM7 11h8v1h-8zM3 12h12v1h-12zM4 13h11v1h-11zM4 14h10v1h-10zM5 15h9v1h-9zM5 16h9v1h-9z'/></svg>") 10 1, pointer;
+  --px-cursor-text: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='22' viewBox='0 0 7 13' shape-rendering='crispEdges'><path fill='%23000' d='M0 0h7v1h-7zM0 1h1v1h-1zM3 1h1v1h-1zM6 1h1v1h-1zM0 2h3v1h-3zM4 2h3v1h-3zM2 3h1v1h-1zM4 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM2 7h1v1h-1zM4 7h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM2 9h1v1h-1zM4 9h1v1h-1zM0 10h3v1h-3zM4 10h3v1h-3zM0 11h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM0 12h7v1h-7z'/><path fill='%23fff' d='M1 1h2v1h-2zM4 1h2v1h-2zM3 2h1v1h-1zM3 3h1v1h-1zM3 4h1v1h-1zM3 5h1v1h-1zM3 6h1v1h-1zM3 7h1v1h-1zM3 8h1v1h-1zM3 9h1v1h-1zM3 10h1v1h-1zM1 11h2v1h-2zM4 11h2v1h-2zM3 12h1v1h-1z'/></svg>") 6 11, text;
+
+  --px-theme-swatch-paper: #ffd23f;
+  --px-theme-swatch-paper-1: #faf3e3;
+  --px-theme-swatch-paper-2: #16130d;
+  --px-theme-swatch-paper-3: #ffd23f;
+  --px-theme-swatch-paper-4: #ff6b35;
+  --px-theme-swatch-midnight: #8b7bff;
+  --px-theme-swatch-midnight-1: #0f1115;
+  --px-theme-swatch-midnight-2: #f2f0e9;
+  --px-theme-swatch-midnight-3: #ffd23f;
+  --px-theme-swatch-midnight-4: #8b7bff;
+  --px-theme-swatch-arcade: #ff4245;
+  --px-theme-swatch-arcade-1: #171c48;
+  --px-theme-swatch-arcade-2: #ffffff;
+  --px-theme-swatch-arcade-3: #ff4245;
+  --px-theme-swatch-arcade-4: #ffc93c;
+  --px-theme-swatch-terminal: #33ff66;
+  --px-theme-swatch-terminal-1: #060c06;
+  --px-theme-swatch-terminal-2: #33ff66;
+  --px-theme-swatch-terminal-3: #ffbf00;
+  --px-theme-swatch-terminal-4: #1e9e44;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -76,6 +139,10 @@
   --px-info-ink: #ffffff;
 
   --px-selection: #ffd23f;
+  --px-selection-ink: var(--px-accent-ink);
+
+  --px-score-case: var(--px-ink);
+  --px-score-digit: var(--px-bg);
 }
 
 /* ==========================================================================
@@ -107,6 +174,10 @@
   --px-info-ink: #0f1115;
 
   --px-selection: #8b7bff;
+  --px-selection-ink: var(--px-accent-2-ink);
+
+  --px-score-case: var(--px-bg);
+  --px-score-digit: var(--px-ink);
 }
 
 /* ==========================================================================
@@ -138,6 +209,10 @@
   --px-info-ink: #171c48;
 
   --px-selection: #ffc93c;
+  --px-selection-ink: var(--px-accent-2-ink);
+
+  --px-score-case: var(--px-bg);
+  --px-score-digit: var(--px-ink);
 }
 
 /* ==========================================================================
@@ -153,6 +228,7 @@
   --px-ink-muted: #1e9e44;
   --px-border-color: #33ff66;
   --px-shadow-color: #124d24;
+  --px-text-shadow-color: #021f0b;
 
   --px-accent: #33ff66;
   --px-accent-ink: #060c06;
@@ -169,6 +245,10 @@
   --px-info-ink: #060c06;
 
   --px-selection: #33ff66;
+  --px-selection-ink: var(--px-accent-ink);
+
+  --px-score-case: var(--px-bg);
+  --px-score-digit: var(--px-ink);
 
   /* the terminal speaks mono */
   --px-font-body: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
