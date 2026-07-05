@@ -1,7 +1,6 @@
 {
   "name": "puxel",
-  "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "A brutalist-retro React UI kit with pixel accents and accessible modern components.",
   "homepage": "https://lumpenspace.github.io/puxel/",
@@ -12,18 +11,31 @@
   "main": "./dist/puxel.js",
   "module": "./dist/puxel.js",
   "types": "./dist/types/components/index.d.ts",
+  "style": "./dist/puxel.css",
+  "files": [
+    "dist/puxel.js",
+    "dist/puxel.css",
+    "dist/types/components"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "types": "./dist/types/components/index.d.ts",
       "import": "./dist/puxel.js"
     },
-    "./styles.css": "./src/styles/puxel.css",
+    "./styles.css": "./dist/puxel.css",
     "./puxel.css": "./dist/puxel.css"
   },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && node scripts/build-css.mjs",
+    "prepack": "npm run build:lib",
     "lint": "oxlint",
     "preview": "vite preview",
     "previews": "node scripts/build-previews.mjs",

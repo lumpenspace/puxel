@@ -6,6 +6,8 @@ support, native `<dialog>`).
 
 **Live demo and docs:** <https://lumpenspace.github.io/puxel/>
 
+**Demo video:** <https://lumpenspace.github.io/puxel/jingle.mov>
+
 ![Puxel home screen](public/screenshots/puxel-home.png)
 
 ![Puxel video player docs](public/screenshots/puxel-docs-video.png)
@@ -49,7 +51,7 @@ The Vite showcase has three first-class surfaces:
 - **Home** — composed component showcase with themes, HUD pieces, chat, sprites,
   icons, forms, containers, and media.
 - **Playground** — interactive controls for component states. The Media tab uses
-  `public/jingle.mov` in the `VideoPlayer` demo.
+  the hosted jingle video in the `VideoPlayer` demo.
 - **Docs** — searchable in-app component docs, examples, usage snippets, and prop
   tables generated from the React components.
 
@@ -65,7 +67,7 @@ npm run previews
 ```
 
 `npm run build` writes the GitHub Pages/showcase app to `dist/app/`.
-`npm run build:lib` writes the package build and declarations under `dist/`.
+`npm run build:lib` writes the npm package build and declarations under `dist/`.
 Re-run `npm run docs:props` whenever component props change.
 
 ## Use in your app
@@ -80,5 +82,6 @@ import { ThemeProvider, Button, HealthBar } from "puxel";
 </ThemeProvider>
 ```
 
-The package is still marked private, so treat the GitHub release as the source
-artifact until an npm publish flow is added.
+The npm package ships the compiled React library, bundled CSS, and TypeScript
+declarations. Large showcase-only assets, including the jingle demo video, stay
+hosted on the live docs site instead of being bundled into the package tarball.
