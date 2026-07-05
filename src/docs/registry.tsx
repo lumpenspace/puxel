@@ -67,6 +67,7 @@ import {
   useToast,
   VideoPlayer,
 } from "../components";
+import { publicAsset, spriteAsset } from "../publicAsset";
 
 export interface DocEntry {
   /** Stable id, used in the URL-less selection state and as the React key. */
@@ -191,7 +192,7 @@ function SpinnerExample() {
 }
 
 function SpriteAvatarExample() {
-  return <SpriteAvatar sheetUrl="/sprites/claude.png" state="idle" mode="full" style={shadowSprite} />;
+  return <SpriteAvatar sheetUrl={spriteAsset("claude")} state="idle" mode="full" style={shadowSprite} />;
 }
 
 function FieldExample() {
@@ -288,7 +289,7 @@ function CharacterCardExample() {
     <CharacterCard
       tone="info"
       state="talking"
-      avatar={<SpriteAvatar sheetUrl="/sprites/claude.png" state="talking" mode="full" style={{ "--px-sprite-size": "54px" } as CSSProperties} />}
+      avatar={<SpriteAvatar sheetUrl={spriteAsset("claude")} state="talking" mode="full" style={{ "--px-sprite-size": "54px" } as CSSProperties} />}
       name="Scarlet"
       role="Game Master"
       model="✳ claude-opus-4"
@@ -507,7 +508,7 @@ function RpgCardExample() {
         title="Ranger"
         tone="success"
         level={18}
-        avatar={<SpriteAvatar sheetUrl="/sprites/claude.png" state="idle" mode="full" style={{ "--px-sprite-size": "58px" } as CSSProperties} />}
+        avatar={<SpriteAvatar sheetUrl={spriteAsset("claude")} state="idle" mode="full" style={{ "--px-sprite-size": "58px" } as CSSProperties} />}
         hp={{ value: 48, max: 48, valueLabel: "48/48" }}
         exp={{ value: 66, max: 100, tone: "success" }}
       />
@@ -515,7 +516,7 @@ function RpgCardExample() {
         title="Mage"
         tone="info"
         level={16}
-        avatar={<SpriteAvatar sheetUrl="/sprites/glm.png" state="thinking" mode="full" style={{ "--px-sprite-size": "58px" } as CSSProperties} />}
+        avatar={<SpriteAvatar sheetUrl={spriteAsset("glm")} state="thinking" mode="full" style={{ "--px-sprite-size": "58px" } as CSSProperties} />}
         hp={{ value: 36, max: 36, valueLabel: "36/36" }}
         exp={{ value: 52, max: 100, tone: "info" }}
       />
@@ -523,7 +524,7 @@ function RpgCardExample() {
         title="Knight"
         tone="warning"
         level={20}
-        avatar={<SpriteAvatar sheetUrl="/sprites/llama.png" state="idle" mode="full" style={{ "--px-sprite-size": "58px", "--px-sprite-seat": "0.66" } as CSSProperties} />}
+        avatar={<SpriteAvatar sheetUrl={spriteAsset("llama")} state="idle" mode="full" style={{ "--px-sprite-size": "58px", "--px-sprite-seat": "0.66" } as CSSProperties} />}
         hp={{ value: 60, max: 60, valueLabel: "60/60" }}
         exp={{ value: 74, max: 100, tone: "accent" }}
       />
@@ -535,7 +536,7 @@ function PlayerProfileExample() {
   return (
     <PlayerProfile
       title="Player 1"
-      avatar={<SpriteAvatar sheetUrl="/sprites/llama.png" state="idle" mode="face" style={{ "--px-sprite-size": "48px", "--px-sprite-seat": "0.66" } as CSSProperties} />}
+      avatar={<SpriteAvatar sheetUrl={spriteAsset("llama")} state="idle" mode="face" style={{ "--px-sprite-size": "48px", "--px-sprite-seat": "0.66" } as CSSProperties} />}
       hp={{ value: 32, max: 32, valueLabel: "32/32" }}
       mp={{ value: 18, max: 18, valueLabel: "18/18" }}
       xp={{ value: 462, max: 1000, valueLabel: "462/1000" }}
@@ -587,8 +588,8 @@ function FigureExample() {
 function VideoPlayerExample() {
   return (
     <VideoPlayer
-      src="/jingle.mov"
-      poster="/jingle-poster.jpg"
+      src={publicAsset("jingle.mov")}
+      poster={publicAsset("jingle-poster.jpg")}
       label="Jingle demo"
       caption="Local QuickTime sample"
       aspectRatio="4 / 3"
@@ -718,8 +719,10 @@ export const REGISTRY: DocEntry[] = [
     category: "Controls",
     components: ["SpriteAvatar"],
     summary: "Animated sprite-sheet character, driven by a state → clip map.",
-    code: `<SpriteAvatar
-  sheetUrl="/sprites/claude.png"
+    code: `const spriteUrl = import.meta.env.BASE_URL + "sprites/claude.png";
+
+<SpriteAvatar
+  sheetUrl={spriteUrl}
   state="idle"
   mode="full"
   style={{ "--px-sprite-size": "72px" }}
@@ -852,10 +855,12 @@ export const REGISTRY: DocEntry[] = [
     category: "Containers",
     components: ["CharacterCard"],
     summary: "Portrait card for a player/NPC, with tone + state-driven status line.",
-    code: `<CharacterCard
+    code: `const spriteUrl = import.meta.env.BASE_URL + "sprites/claude.png";
+
+<CharacterCard
   tone="info"
   state="talking"
-  avatar={<SpriteAvatar sheetUrl="/sprites/claude.png" state="talking" mode="full" />}
+  avatar={<SpriteAvatar sheetUrl={spriteUrl} state="talking" mode="full" />}
   name="Scarlet"
   role="Game Master"
   model="✳ claude-opus-4"
@@ -1068,10 +1073,12 @@ export const REGISTRY: DocEntry[] = [
     category: "Game HUD",
     components: ["RpgCard"],
     summary: "Portrait card for party rosters, with level, HP, and EXP meters.",
-    code: `<RpgCard
+    code: `const spriteUrl = import.meta.env.BASE_URL + "sprites/claude.png";
+
+<RpgCard
   title="Ranger"
   level={18}
-  avatar={<SpriteAvatar sheetUrl="/sprites/claude.png" state="idle" mode="full" />}
+  avatar={<SpriteAvatar sheetUrl={spriteUrl} state="idle" mode="full" />}
   hp={{ value: 48, max: 48, valueLabel: "48/48" }}
   exp={{ value: 66, max: 100, tone: "success" }}
 />`,
@@ -1083,9 +1090,11 @@ export const REGISTRY: DocEntry[] = [
     category: "Game HUD",
     components: ["PlayerProfile"],
     summary: "Compact player HUD profile with dedicated hp, mp, and xp bar props.",
-    code: `<PlayerProfile
+    code: `const spriteUrl = import.meta.env.BASE_URL + "sprites/llama.png";
+
+<PlayerProfile
   title="Player 1"
-  avatar={<SpriteAvatar sheetUrl="/sprites/llama.png" state="idle" mode="face" />}
+  avatar={<SpriteAvatar sheetUrl={spriteUrl} state="idle" mode="face" />}
   hp={{ value: 32, max: 32, valueLabel: "32/32" }}
   mp={{ value: 18, max: 18, valueLabel: "18/18" }}
   xp={{ value: 462, max: 1000, valueLabel: "462/1000" }}
@@ -1159,9 +1168,11 @@ export const REGISTRY: DocEntry[] = [
     category: "Media",
     components: ["VideoPlayer"],
     summary: "Custom Puxel video chrome over a native video element, with play, seek, mute, and fullscreen controls.",
-    code: `<VideoPlayer
-  src="/jingle.mov"
-  poster="/jingle-poster.jpg"
+    code: `const assetBase = import.meta.env.BASE_URL;
+
+<VideoPlayer
+  src={assetBase + "jingle.mov"}
+  poster={assetBase + "jingle-poster.jpg"}
   label="Jingle demo"
   caption="Local QuickTime sample"
   aspectRatio="4 / 3"

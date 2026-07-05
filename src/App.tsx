@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Playground } from "./Playground";
 import { DocsPage } from "./docs/DocsPage";
+import { spriteAsset } from "./publicAsset";
 import {
   Accordion,
   AccordionItem,
@@ -313,7 +314,7 @@ function tableSprite(key: CastKey, state: string, mode: "full" | "face", size: n
   const c = CAST[key];
   return (
     <SpriteAvatar
-      sheetUrl={`/sprites/${c.sheet}.png`}
+      sheetUrl={spriteAsset(c.sheet)}
       state={state}
       mode={mode}
       className={className}
@@ -325,7 +326,7 @@ function tableSprite(key: CastKey, state: string, mode: "full" | "face", size: n
 function sampleSprite(sample: HeroAvatarSample, size: number, className?: string) {
   return (
     <SpriteAvatar
-      sheetUrl={`/sprites/${sample.sheet}.png`}
+      sheetUrl={spriteAsset(sample.sheet)}
       state={sample.state ?? "idle"}
       mode="face"
       className={className}
@@ -866,16 +867,16 @@ function Showcase() {
 
           <Section title="Characters & sprites">
             <Row>
-              <SpriteAvatar sheetUrl="/sprites/claude.png" state="idle" mode="full" style={{ "--px-sprite-size": "72px" } as CSSProperties} />
+              <SpriteAvatar sheetUrl={spriteAsset("claude")} state="idle" mode="full" style={{ "--px-sprite-size": "72px" } as CSSProperties} />
               <SpriteAvatar
-                sheetUrl="/sprites/deepseek.png"
+                sheetUrl={spriteAsset("deepseek")}
                 state="talking"
                 mode="full"
                 style={{ "--px-sprite-size": "72px", "--px-sprite-seat": "0.8", "--px-sprite-scale": "1.05" } as CSSProperties}
               />
-              <SpriteAvatar sheetUrl="/sprites/glm.png" state="thinking" mode="full" flip style={{ "--px-sprite-size": "72px" } as CSSProperties} />
-              <SpriteAvatar sheetUrl="/sprites/claude.png" state="idle" mode="face" style={{ "--px-sprite-size": "56px" } as CSSProperties} />
-              <SpriteAvatar sheetUrl="/sprites/llama.png" state="idle" mode="face" style={{ "--px-sprite-size": "56px" } as CSSProperties} />
+              <SpriteAvatar sheetUrl={spriteAsset("glm")} state="thinking" mode="full" flip style={{ "--px-sprite-size": "72px" } as CSSProperties} />
+              <SpriteAvatar sheetUrl={spriteAsset("claude")} state="idle" mode="face" style={{ "--px-sprite-size": "56px" } as CSSProperties} />
+              <SpriteAvatar sheetUrl={spriteAsset("llama")} state="idle" mode="face" style={{ "--px-sprite-size": "56px" } as CSSProperties} />
             </Row>
             <Row>
               <Popover
@@ -883,7 +884,7 @@ function Showcase() {
                   <div className="px-popover">
                     <div className="px-popover-title">Scarlet</div>
                     <div className="px-popover-head">
-                      <SpriteAvatar sheetUrl="/sprites/claude.png" state="idle" mode="face" style={{ "--px-sprite-size": "44px" } as CSSProperties} />
+                      <SpriteAvatar sheetUrl={spriteAsset("claude")} state="idle" mode="face" style={{ "--px-sprite-size": "44px" } as CSSProperties} />
                       <div style={{ fontWeight: 800, color: "var(--px-danger)" }}>RED · Game master</div>
                     </div>
                     <div className="px-popover-meta">✳ claude-opus-4</div>
@@ -892,7 +893,7 @@ function Showcase() {
               >
                 <CharacterCard
                   tone="danger"
-                  avatar={<SpriteAvatar sheetUrl="/sprites/claude.png" state="idle" mode="full" style={{ "--px-sprite-size": "54px" } as CSSProperties} />}
+                  avatar={<SpriteAvatar sheetUrl={spriteAsset("claude")} state="idle" mode="full" style={{ "--px-sprite-size": "54px" } as CSSProperties} />}
                   name="SCARLET"
                   role="Game master"
                   model="✳ claude-opus-4"
@@ -902,14 +903,14 @@ function Showcase() {
               <CharacterCard
                 tone="info"
                 state="thinking"
-                avatar={<SpriteAvatar sheetUrl="/sprites/glm.png" state="thinking" mode="full" style={{ "--px-sprite-size": "54px" } as CSSProperties} />}
+                avatar={<SpriteAvatar sheetUrl={spriteAsset("glm")} state="thinking" mode="full" style={{ "--px-sprite-size": "54px" } as CSSProperties} />}
                 name="COBALT"
                 role="Guesser"
                 model="◆ glm-4.6"
                 status="thinking…"
               />
               <CharacterCard
-                avatar={<SpriteAvatar sheetUrl="/sprites/llama.png" state="idle" mode="full" style={{ "--px-sprite-size": "54px" } as CSSProperties} />}
+                avatar={<SpriteAvatar sheetUrl={spriteAsset("llama")} state="idle" mode="full" style={{ "--px-sprite-size": "54px" } as CSSProperties} />}
                 name="LLAMA"
                 role="Guesser"
                 model="⬡ llama-4"
@@ -925,7 +926,7 @@ function Showcase() {
                 <ChatMessage
                   tone="danger"
                   name="Claude"
-                  avatar={<SpriteAvatar sheetUrl="/sprites/deepseek.png" state="idle" mode="face" style={{ "--px-sprite-size": "30px", "--px-sprite-seat": "0.8" } as CSSProperties} />}
+                  avatar={<SpriteAvatar sheetUrl={spriteAsset("deepseek")} state="idle" mode="face" style={{ "--px-sprite-size": "30px", "--px-sprite-seat": "0.8" } as CSSProperties} />}
                 >
                   OCEAN and RIVER both fit — I'd start with RIVER.
                 </ChatMessage>
@@ -942,7 +943,7 @@ function Showcase() {
                 <ChatMessage
                   tone="info"
                   name="Cobalt"
-                  avatar={<SpriteAvatar sheetUrl="/sprites/glm.png" state="idle" mode="face" style={{ "--px-sprite-size": "30px" } as CSSProperties} />}
+                  avatar={<SpriteAvatar sheetUrl={spriteAsset("glm")} state="idle" mode="face" style={{ "--px-sprite-size": "30px" } as CSSProperties} />}
                 >
                   Careful — the assassin might be BANK.
                 </ChatMessage>

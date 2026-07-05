@@ -1,5 +1,6 @@
 import { useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import "./styles/playground.css";
+import { publicAsset, spriteAsset } from "./publicAsset";
 import {
   Avatar,
   AvatarGroup,
@@ -169,7 +170,7 @@ function SpritesPanel() {
       <Fieldset title="Sprite avatar" shadow>
         <Playfield>
           <Stage bare>
-            <SpriteAvatar sheetUrl={`/sprites/${sheet}.png`} state={state} mode={mode} flip={flip} style={spriteStyle} />
+            <SpriteAvatar sheetUrl={spriteAsset(sheet)} state={state} mode={mode} flip={flip} style={spriteStyle} />
           </Stage>
           <Controls>
             <ControlRow label="Sheet">
@@ -212,7 +213,7 @@ function SpritesPanel() {
           {SHEETS.map((s) => (
             <div key={s} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
               <SpriteAvatar
-                sheetUrl={`/sprites/${s}.png`}
+                sheetUrl={spriteAsset(s)}
                 state={state}
                 mode={mode}
                 flip={flip}
@@ -234,7 +235,7 @@ function SpritesPanel() {
               state={ccState}
               avatar={
                 <SpriteAvatar
-                  sheetUrl={`/sprites/${sheet}.png`}
+                  sheetUrl={spriteAsset(sheet)}
                   state={ccState}
                   mode="full"
                   style={{ "--px-sprite-size": "54px", ...SHEET_STYLE[sheet] } as CSSProperties}
@@ -326,7 +327,7 @@ function chatAvatar(speaker: SpeakerKey, size: number) {
   const s = SPEAKERS[speaker];
   return (
     <SpriteAvatar
-      sheetUrl={`/sprites/${s.sheet}.png`}
+      sheetUrl={spriteAsset(s.sheet)}
       state="idle"
       mode="face"
       style={{ "--px-sprite-size": `${size}px`, ...SHEET_STYLE[s.sheet] } as CSSProperties}
@@ -442,7 +443,7 @@ function ChatPanel() {
               state={cardState}
               avatar={
                 <SpriteAvatar
-                  sheetUrl={`/sprites/${current.sheet}.png`}
+                  sheetUrl={spriteAsset(current.sheet)}
                   state={cardState}
                   mode="full"
                   style={{ "--px-sprite-size": "54px", ...SHEET_STYLE[current.sheet] } as CSSProperties}
@@ -996,7 +997,7 @@ const FIGURE_SOURCES = [
   { label: "Coastline", value: "https://picsum.photos/seed/puxel2/560/380" },
   { label: "Street", value: "https://picsum.photos/seed/puxel3/560/380" },
 ];
-const EXAMPLE_VIDEO_SRC = "/jingle.mov";
+const EXAMPLE_VIDEO_SRC = publicAsset("jingle.mov");
 
 function MediaPanel() {
   const [src, setSrc] = useState(FIGURE_SOURCES[0].value);
@@ -1075,7 +1076,7 @@ function MediaPanel() {
           />
           <VideoPlayer
             src={EXAMPLE_VIDEO_SRC}
-            poster="/jingle-poster.jpg"
+            poster={publicAsset("jingle-poster.jpg")}
             label="Jingle demo"
             caption="Local QuickTime sample"
             aspectRatio="4 / 3"
