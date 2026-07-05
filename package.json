@@ -3,6 +3,22 @@
   "version": "0.1.2",
   "type": "module",
   "description": "A brutalist-retro React UI kit with pixel accents and accessible modern components.",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "ui",
+    "ui-kit",
+    "component-library",
+    "components",
+    "css",
+    "typescript",
+    "pixel-art",
+    "retro",
+    "brutalist",
+    "accessibility",
+    "themes",
+    "design-system"
+  ],
   "homepage": "https://lumpenspace.github.io/puxel/",
   "repository": {
     "type": "git",

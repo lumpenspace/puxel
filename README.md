@@ -6,8 +6,6 @@ support, native `<dialog>`).
 
 **Live demo and docs:** <https://lumpenspace.github.io/puxel/>
 
-**Demo video:** <https://lumpenspace.github.io/puxel/jingle.mov>
-
 ![Puxel home screen](public/screenshots/puxel-home.png)
 
 ![Puxel video player docs](public/screenshots/puxel-docs-video.png)
@@ -82,6 +80,6 @@ import { ThemeProvider, Button, HealthBar } from "puxel";
 </ThemeProvider>
 ```
 
-The npm package ships the compiled React library, bundled CSS, and TypeScript
-declarations. Large showcase-only assets, including the jingle demo video, stay
-hosted on the live docs site instead of being bundled into the package tarball.
+## License
+
+MIT.
