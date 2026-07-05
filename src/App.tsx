@@ -205,6 +205,8 @@ const FOURTH_OF_JULY_THEME_INDEX = 2;
 const FOURTH_OF_JULY_UNTIL = Date.parse("2026-07-06T04:05:00.000Z");
 const FOURTH_OF_JULY_MARQUEE = "happy fourth of july (:";
 const FOURTH_OF_JULY_MARQUEE_REPEATS = [0, 1, 2, 3, 4, 5] as const;
+const GITHUB_URL = "https://github.com/lumpenspace/puxel";
+const NPM_URL = "https://www.npmjs.com/package/puxel";
 
 const HERO_RPG_CARDS = [
   {
@@ -715,7 +717,31 @@ function Showcase() {
             Docs
           </Button>
         </div>
-        <ThemeSwitcher className="px-site-themes" onThemeSelect={triggerFourthOfJuly} />
+        <div className="px-site-right">
+          <nav className="px-site-links" aria-label="Project links">
+            <a
+              className="px-btn px-btn--sm px-btn--icon px-site-link"
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub repository"
+              title="GitHub"
+            >
+              <Icon name="github" />
+            </a>
+            <a
+              className="px-btn px-btn--sm px-btn--icon px-site-link"
+              href={NPM_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="npm package"
+              title="npm"
+            >
+              <Icon name="npm" />
+            </a>
+          </nav>
+          <ThemeSwitcher className="px-site-themes" onThemeSelect={triggerFourthOfJuly} />
+        </div>
       </div>
     </header>
   );

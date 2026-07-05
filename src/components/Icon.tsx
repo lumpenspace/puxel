@@ -30,6 +30,8 @@ import minus from "@hackernoon/pixel-icon-library/icons/SVG/regular/minus.svg?ra
 import trash from "@hackernoon/pixel-icon-library/icons/SVG/regular/trash.svg?raw";
 import bars from "@hackernoon/pixel-icon-library/icons/SVG/regular/bars.svg?raw";
 import clock from "@hackernoon/pixel-icon-library/icons/SVG/regular/clock.svg?raw";
+import github from "@hackernoon/pixel-icon-library/icons/SVG/brands/github.svg?raw";
+import npm from "@hackernoon/pixel-icon-library/icons/SVG/brands/npm.svg?raw";
 
 const ICONS = {
   times,
@@ -57,6 +59,8 @@ const ICONS = {
   trash,
   bars,
   clock,
+  github,
+  npm,
 };
 
 export type IconName = keyof typeof ICONS;
