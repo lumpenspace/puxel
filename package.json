@@ -1,7 +1,7 @@
 {
   "name": "puxel",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "description": "A brutalist-retro React UI kit with pixel accents and accessible modern components.",
   "homepage": "https://lumpenspace.github.io/puxel/",
