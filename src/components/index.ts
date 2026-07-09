@@ -102,3 +102,4 @@ export {
   THEMES,
   type ThemeName,
 } from "./Theme";
+export { Autocomplete, type AutocompleteProps } from "./Autocomplete";
